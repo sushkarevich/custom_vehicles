@@ -1,0 +1,103 @@
+name: Build and test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  plugin-unix:
+    name: Plugin (Linux, JDK 21)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: minecraft cars
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+      - name: Verify generated Paper material catalog
+        run: |
+          ./gradlew generateBlockMaterials
+          git diff --exit-code -- "../custom_vehicles_editor/src/shared/block-materials.json"
+      - name: Build and test
+        run: ./gradlew clean test build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CustomVehicles-plugin
+          path: minecraft cars/build/libs/CustomVehicles-*.jar
+          if-no-files-found: error
+
+  plugin-windows:
+    name: Plugin (Windows, JDK 21)
+    runs-on: windows-2025
+    defaults:
+      run:
+        working-directory: minecraft cars
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+      - name: Build and test through Windows wrapper
+        run: .\gradlew.bat clean test build
+
+  editor-macos:
+    name: Editor (macOS arm64)
+    runs-on: macos-26
+    defaults:
+      run:
+        working-directory: custom_vehicles_editor
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: custom_vehicles_editor/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
+      - run: npm run dist:mac
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CustomVehicles-Editor-macOS-arm64
+          path: |
+            custom_vehicles_editor/release/*.dmg
+            custom_vehicles_editor/release/*-mac-*.zip
+          if-no-files-found: error
+
+  editor-windows:
+    name: Editor (Windows x64)
+    runs-on: windows-2025
+    defaults:
+      run:
+        working-directory: custom_vehicles_editor
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: custom_vehicles_editor/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
+      - run: npm run dist:win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CustomVehicles-Editor-Windows-x64
+          path: custom_vehicles_editor/release/*.exe
+          if-no-files-found: error

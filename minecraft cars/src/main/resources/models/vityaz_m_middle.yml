@@ -1,0 +1,691 @@
+schema-version: 1
+id: vityaz_m_middle
+display-name: Трамвай «Витязь-М» — средняя секция
+coordinate-system:
+  forward: positive-z
+interaction:
+  offset:
+    x: 0.0
+    y: 1.325
+    z: 0.0
+  width: 2.35
+  height: 2.65
+display:
+  interpolation-duration: 2
+  teleport-duration: 1
+parts:
+- id: underframe
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 0.28
+    z: 0.0
+  scale:
+    x: 1.92
+    y: 0.22
+    z: 2.85
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: lower_body
+  type: block
+  material: WHITE_CONCRETE
+  position:
+    x: 0.0
+    y: 0.55
+    z: 0.0
+  scale:
+    x: 2.14
+    y: 0.42
+    z: 2.85
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: mid_body
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 1.18
+    z: 0.0
+  scale:
+    x: 2.12
+    y: 0.88
+    z: 2.85
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: window_band
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: 0.0
+    y: 1.86
+    z: 0.0
+  scale:
+    x: 2.1
+    y: 0.72
+    z: 2.85
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: upper_body
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 2.28
+    z: 0.0
+  scale:
+    x: 2.12
+    y: 0.18
+    z: 2.85
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof
+  type: block
+  material: WHITE_CONCRETE
+  position:
+    x: 0.0
+    y: 2.48
+    z: 0.0
+  scale:
+    x: 2.18
+    y: 0.22
+    z: 2.85
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_lower_trim
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: -1.09
+    y: 0.48
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.2
+    z: 2.67
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_roof_trim
+  type: block
+  material: WHITE_CONCRETE
+  position:
+    x: -1.09
+    y: 2.4
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.1
+    z: 2.71
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_lower_trim
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: 1.09
+    y: 0.48
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.2
+    z: 2.67
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_roof_trim
+  type: block
+  material: WHITE_CONCRETE
+  position:
+    x: 1.09
+    y: 2.4
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.1
+    z: 2.71
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_1_panel
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: -1.085
+    y: 1.46
+    z: 0.0
+  scale:
+    x: 0.07
+    y: 1.52
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_1_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.12
+    y: 1.9
+    z: 0.0
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.48
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_1_sill
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: -1.12
+    y: 0.74
+    z: 0.0
+  scale:
+    x: 0.04
+    y: 0.13
+    z: 0.58
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_window_1
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.115
+    y: 1.87
+    z: 0.92
+  scale:
+    x: 0.04
+    y: 0.68
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_window_2
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.115
+    y: 1.87
+    z: -0.92
+  scale:
+    x: 0.04
+    y: 0.68
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_1_panel
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 1.085
+    y: 1.46
+    z: 0.0
+  scale:
+    x: 0.07
+    y: 1.52
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_1_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.12
+    y: 1.9
+    z: 0.0
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.48
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_1_sill
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: 1.12
+    y: 0.74
+    z: 0.0
+  scale:
+    x: 0.04
+    y: 0.13
+    z: 0.58
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_window_1
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.115
+    y: 1.87
+    z: 0.92
+  scale:
+    x: 0.04
+    y: 0.68
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_window_2
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.115
+    y: 1.87
+    z: -0.92
+  scale:
+    x: 0.04
+    y: 0.68
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_articulation_outer
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.38
+    z: 1.47
+  scale:
+    x: 1.9
+    y: 2.1
+    z: 0.24
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_articulation_inner
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 1.38
+    z: 1.47
+  scale:
+    x: 1.72
+    y: 1.92
+    z: 0.28
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_articulation_rib_1
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 0.62
+    z: 1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_articulation_rib_2
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 0.95
+    z: 1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_articulation_rib_3
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.28
+    z: 1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_articulation_rib_4
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.61
+    z: 1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_articulation_rib_5
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.94
+    z: 1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_articulation_rib_6
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 2.27
+    z: 1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_outer
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.38
+    z: -1.47
+  scale:
+    x: 1.9
+    y: 2.1
+    z: 0.24
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_inner
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 1.38
+    z: -1.47
+  scale:
+    x: 1.72
+    y: 1.92
+    z: 0.28
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_1
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 0.62
+    z: -1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_2
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 0.95
+    z: -1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_3
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.28
+    z: -1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_4
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.61
+    z: -1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_5
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.94
+    z: -1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_6
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 2.27
+    z: -1.47
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: bogie_frame
+  type: block
+  material: DEEPSLATE_TILES
+  position:
+    x: 0.0
+    y: 0.27
+    z: 0.0
+  scale:
+    x: 1.62
+    y: 0.22
+    z: 0.92
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: bogie_wheel_left
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: -1.04
+    y: 0.28
+    z: 0.0
+  scale:
+    x: 0.2
+    y: 0.52
+    z: 0.74
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: bogie_wheel_right
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: 1.04
+    y: 0.28
+    z: 0.0
+  scale:
+    x: 0.2
+    y: 0.52
+    z: 0.74
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: pantograph_lower_left
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: -0.38
+    y: 2.82
+    z: 0.0
+  scale:
+    x: 0.1
+    y: 0.58
+    z: 0.12
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: pantograph_lower_right
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.38
+    y: 2.82
+    z: 0.0
+  scale:
+    x: 0.1
+    y: 0.58
+    z: 0.12
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: pantograph_upper_left
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: -0.2
+    y: 3.13
+    z: 0.0
+  scale:
+    x: 0.1
+    y: 0.36
+    z: 0.12
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: pantograph_upper_right
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.2
+    y: 3.13
+    z: 0.0
+  scale:
+    x: 0.1
+    y: 0.36
+    z: 0.12
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: pantograph_crossbar
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 3.36
+    z: 0.0
+  scale:
+    x: 1.22
+    y: 0.09
+    z: 0.14
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: pantograph_contact
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 3.45
+    z: 0.0
+  scale:
+    x: 1.62
+    y: 0.07
+    z: 0.12
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0

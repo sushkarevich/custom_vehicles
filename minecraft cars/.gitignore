@@ -1,0 +1,12 @@
+.gradle/
+build/
+.DS_Store
+._*
+*.iml
+.idea/
+backups/
+server/
+run/
+logs/
+plugins/
+*.tmp

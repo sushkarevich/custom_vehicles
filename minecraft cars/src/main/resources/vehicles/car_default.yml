@@ -1,0 +1,14 @@
+schema-version: 1
+id: car_default
+display-name: "Легковой автомобиль"
+behavior: car
+model: car_default
+item:
+  material: MINECART
+  name: "Легковой автомобиль"
+  lore:
+    - "ПКМ по блоку — установить"
+    - "Пробел во время езды — гудок"
+    - "Shift + ПКМ — меню транспорта"
+menu-description:
+  - "Управляемая дорожная машина"

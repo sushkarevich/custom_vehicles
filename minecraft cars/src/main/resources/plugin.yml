@@ -1,0 +1,22 @@
+name: CustomVehicles
+version: '${version}'
+main: ru.customvehicles.CustomVehiclesPlugin
+api-version: '1.21'
+author: Valentin
+description: Cars and rail vehicles with persistence for Paper 1.21.1
+depend: [ProtocolLib]
+
+commands:
+  customvehicles:
+    description: Opens the vehicle catalog and manages CustomVehicles
+    usage: /customvehicles <catalog|list|menu|config|route|road|give [player] [variant]|remove|debug|reload>
+    aliases: [cv]
+    permission: customvehicles.command
+
+permissions:
+  customvehicles.command:
+    description: Allows use of the main CustomVehicles command
+    default: op
+  customvehicles.drive:
+    description: Allows driving vehicles
+    default: true

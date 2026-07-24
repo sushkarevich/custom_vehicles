@@ -1,0 +1,16 @@
+schema-version: 1
+id: metro_717
+display-name: "Головной вагон 81-717"
+behavior: train
+models:
+  locomotive: metro_717_head
+  wagon: metro_714_wagon
+item:
+  material: FURNACE_MINECART
+  name: "Головной вагон 81-717"
+  lore:
+    - "ПКМ по рельсам — установить"
+    - "Пробел во время езды — гудок"
+    - "Shift + ПКМ — меню транспорта"
+menu-description:
+  - "Машинистское место и управление составом"

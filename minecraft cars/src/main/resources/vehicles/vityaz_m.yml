@@ -1,0 +1,17 @@
+schema-version: 1
+id: vityaz_m
+display-name: "Трамвай Витязь-М"
+behavior: tram
+models:
+  front: vityaz_m_front
+  middle: vityaz_m_middle
+  rear: vityaz_m_rear
+item:
+  material: HOPPER_MINECART
+  name: "Трамвай Витязь-М"
+  lore:
+    - "ПКМ по рельсам — установить"
+    - "Пробел во время езды — гудок"
+    - "Shift + ПКМ — меню транспорта"
+menu-description:
+  - "Трёхсекционный низкопольный трамвай"

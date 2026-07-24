@@ -1,0 +1,196 @@
+schema-version: 1
+id: car_default
+display-name: Стандартный автомобиль
+coordinate-system:
+  forward: negative-z
+interaction:
+  offset:
+    x: 0.0
+    y: 0.65
+    z: 0.0
+  width: 2.2
+  height: 1.35
+display:
+  interpolation-duration: 2
+  teleport-duration: 1
+parts:
+- id: body_base
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 0.4
+    z: 0.0
+  scale:
+    x: 1.7
+    y: 0.38
+    z: 3.2
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: bonnet
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 0.78
+    z: -0.72
+  scale:
+    x: 1.58
+    y: 0.36
+    z: 1.25
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: cabin_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 0.0
+    y: 1.08
+    z: 0.3
+  scale:
+    x: 1.46
+    y: 0.5
+    z: 1.1
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 1.42
+    z: 0.3
+  scale:
+    x: 1.54
+    y: 0.16
+    z: 1.18
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: wheel_left_front
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: -0.9
+    y: 0.34
+    z: -0.88
+  scale:
+    x: 0.22
+    y: 0.7
+    z: 0.7
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: wheel_right_front
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: 0.9
+    y: 0.34
+    z: -0.88
+  scale:
+    x: 0.22
+    y: 0.7
+    z: 0.7
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: wheel_left_rear
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: -0.9
+    y: 0.34
+    z: 0.98
+  scale:
+    x: 0.22
+    y: 0.7
+    z: 0.7
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: wheel_right_rear
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: 0.9
+    y: 0.34
+    z: 0.98
+  scale:
+    x: 0.22
+    y: 0.7
+    z: 0.7
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: headlight_left
+  type: block
+  material: SEA_LANTERN
+  position:
+    x: -0.53
+    y: 0.64
+    z: -1.63
+  scale:
+    x: 0.34
+    y: 0.26
+    z: 0.08
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: headlight_right
+  type: block
+  material: SEA_LANTERN
+  position:
+    x: 0.53
+    y: 0.64
+    z: -1.63
+  scale:
+    x: 0.34
+    y: 0.26
+    z: 0.08
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: tail_light_left
+  type: block
+  material: REDSTONE_BLOCK
+  position:
+    x: -0.58
+    y: 0.59
+    z: 1.63
+  scale:
+    x: 0.28
+    y: 0.2
+    z: 0.08
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: tail_light_right
+  type: block
+  material: REDSTONE_BLOCK
+  position:
+    x: 0.58
+    y: 0.59
+    z: 1.63
+  scale:
+    x: 0.28
+    y: 0.2
+    z: 0.08
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0

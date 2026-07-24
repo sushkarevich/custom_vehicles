@@ -1,0 +1,13 @@
+schema-version: 1
+id: metro_714_wagon
+display-name: "Пассажирский вагон 81-714"
+behavior: wagon
+model: metro_714_wagon
+item:
+  material: CHEST_MINECART
+  name: "Пассажирский вагон 81-714"
+  lore:
+    - "ПКМ по локомотиву или вагону — подцепить"
+    - "Shift + ПКМ с поводком — отцепить последний"
+menu-description:
+  - "Подцепляется к головному вагону"

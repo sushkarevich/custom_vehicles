@@ -1,0 +1,676 @@
+schema-version: 1
+id: metro_714_wagon
+display-name: Пассажирский вагон метро 81-714
+coordinate-system:
+  forward: positive-z
+interaction:
+  offset:
+    x: 0.0
+    y: 1.225
+    z: 0.0
+  width: 2.25
+  height: 2.45
+display:
+  interpolation-duration: 2
+  teleport-duration: 1
+parts:
+- id: underframe
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 0.31
+    z: 0.0
+  scale:
+    x: 1.88
+    y: 0.24
+    z: 5.96
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: lower_body
+  type: block
+  material: CYAN_TERRACOTTA
+  position:
+    x: 0.0
+    y: 0.72
+    z: 0.0
+  scale:
+    x: 2.02
+    y: 0.72
+    z: 5.86
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: upper_body
+  type: block
+  material: CYAN_CONCRETE
+  position:
+    x: 0.0
+    y: 1.48
+    z: 0.0
+  scale:
+    x: 2.0
+    y: 1.48
+    z: 5.84
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof
+  type: block
+  material: WEATHERED_COPPER
+  position:
+    x: 0.0
+    y: 2.31
+    z: 0.0
+  scale:
+    x: 2.1
+    y: 0.18
+    z: 5.94
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: center_chassis
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 0.24
+    z: 0.0
+  scale:
+    x: 1.42
+    y: 0.3
+    z: 1.45
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_lower_trim
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: -1.03
+    y: 1.08
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.1
+    z: 5.7
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_lower_trim
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: 1.03
+    y: 1.08
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.1
+    z: 5.7
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof_vent_rear
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 2.44
+    z: -1.95
+  scale:
+    x: 0.58
+    y: 0.1
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof_vent_center
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 2.44
+    z: 0.0
+  scale:
+    x: 0.58
+    y: 0.1
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof_vent_front
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 2.44
+    z: 1.95
+  scale:
+    x: 0.58
+    y: 0.1
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_bogie_frame
+  type: block
+  material: DEEPSLATE_TILES
+  position:
+    x: 0.0
+    y: 0.33
+    z: -1.92
+  scale:
+    x: 1.72
+    y: 0.22
+    z: 1.22
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_wheel_left
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: -1.03
+    y: 0.3
+    z: -1.92
+  scale:
+    x: 0.22
+    y: 0.6
+    z: 1.04
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_wheel_right
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: 1.03
+    y: 0.3
+    z: -1.92
+  scale:
+    x: 0.22
+    y: 0.6
+    z: 1.04
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_bogie_frame
+  type: block
+  material: DEEPSLATE_TILES
+  position:
+    x: 0.0
+    y: 0.33
+    z: 1.92
+  scale:
+    x: 1.72
+    y: 0.22
+    z: 1.22
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_wheel_left
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: -1.03
+    y: 0.3
+    z: 1.92
+  scale:
+    x: 0.22
+    y: 0.6
+    z: 1.04
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_wheel_right
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: 1.03
+    y: 0.3
+    z: 1.92
+  scale:
+    x: 0.22
+    y: 0.6
+    z: 1.04
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_1_panel
+  type: block
+  material: CYAN_TERRACOTTA
+  position:
+    x: -1.035
+    y: 1.48
+    z: -2.25
+  scale:
+    x: 0.08
+    y: 1.48
+    z: 0.62
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_1_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.07
+    y: 1.72
+    z: -2.25
+  scale:
+    x: 0.04
+    y: 0.66
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_2_panel
+  type: block
+  material: CYAN_TERRACOTTA
+  position:
+    x: -1.035
+    y: 1.48
+    z: -0.75
+  scale:
+    x: 0.08
+    y: 1.48
+    z: 0.62
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_2_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.07
+    y: 1.72
+    z: -0.75
+  scale:
+    x: 0.04
+    y: 0.66
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_3_panel
+  type: block
+  material: CYAN_TERRACOTTA
+  position:
+    x: -1.035
+    y: 1.48
+    z: 0.75
+  scale:
+    x: 0.08
+    y: 1.48
+    z: 0.62
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_3_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.07
+    y: 1.72
+    z: 0.75
+  scale:
+    x: 0.04
+    y: 0.66
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_4_panel
+  type: block
+  material: CYAN_TERRACOTTA
+  position:
+    x: -1.035
+    y: 1.48
+    z: 2.25
+  scale:
+    x: 0.08
+    y: 1.48
+    z: 0.62
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_4_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.07
+    y: 1.72
+    z: 2.25
+  scale:
+    x: 0.04
+    y: 0.66
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_window_1
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.07
+    y: 1.72
+    z: -1.5
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.6
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_window_2
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.07
+    y: 1.72
+    z: 0.0
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.6
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_window_3
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.07
+    y: 1.72
+    z: 1.5
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.6
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_1_panel
+  type: block
+  material: CYAN_TERRACOTTA
+  position:
+    x: 1.035
+    y: 1.48
+    z: -2.25
+  scale:
+    x: 0.08
+    y: 1.48
+    z: 0.62
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_1_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.07
+    y: 1.72
+    z: -2.25
+  scale:
+    x: 0.04
+    y: 0.66
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_2_panel
+  type: block
+  material: CYAN_TERRACOTTA
+  position:
+    x: 1.035
+    y: 1.48
+    z: -0.75
+  scale:
+    x: 0.08
+    y: 1.48
+    z: 0.62
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_2_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.07
+    y: 1.72
+    z: -0.75
+  scale:
+    x: 0.04
+    y: 0.66
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_3_panel
+  type: block
+  material: CYAN_TERRACOTTA
+  position:
+    x: 1.035
+    y: 1.48
+    z: 0.75
+  scale:
+    x: 0.08
+    y: 1.48
+    z: 0.62
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_3_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.07
+    y: 1.72
+    z: 0.75
+  scale:
+    x: 0.04
+    y: 0.66
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_4_panel
+  type: block
+  material: CYAN_TERRACOTTA
+  position:
+    x: 1.035
+    y: 1.48
+    z: 2.25
+  scale:
+    x: 0.08
+    y: 1.48
+    z: 0.62
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_4_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.07
+    y: 1.72
+    z: 2.25
+  scale:
+    x: 0.04
+    y: 0.66
+    z: 0.42
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_window_1
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.07
+    y: 1.72
+    z: -1.5
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.6
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_window_2
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.07
+    y: 1.72
+    z: 0.0
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.6
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_window_3
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.07
+    y: 1.72
+    z: 1.5
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.6
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_end_window_left
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -0.48
+    y: 1.7
+    z: 3.02
+  scale:
+    x: 0.58
+    y: 0.68
+    z: 0.05
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_end_window_right
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 0.48
+    y: 1.7
+    z: 3.02
+  scale:
+    x: 0.58
+    y: 0.68
+    z: 0.05
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_end_trim
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.08
+    z: 3.02
+  scale:
+    x: 1.86
+    y: 0.1
+    z: 0.06
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_end_window_left
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -0.48
+    y: 1.7
+    z: -3.02
+  scale:
+    x: 0.58
+    y: 0.68
+    z: 0.05
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_end_window_right
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 0.48
+    y: 1.7
+    z: -3.02
+  scale:
+    x: 0.58
+    y: 0.68
+    z: 0.05
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_end_trim
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.08
+    z: -3.02
+  scale:
+    x: 1.86
+    y: 0.1
+    z: 0.06
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0

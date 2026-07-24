@@ -1,0 +1,781 @@
+schema-version: 1
+id: vityaz_m_front
+display-name: Трамвай «Витязь-М» — передняя секция
+coordinate-system:
+  forward: positive-z
+interaction:
+  offset:
+    x: 0.0
+    y: 1.325
+    z: 0.0
+  width: 2.35
+  height: 2.65
+display:
+  interpolation-duration: 2
+  teleport-duration: 1
+parts:
+- id: underframe
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 0.28
+    z: 0.0
+  scale:
+    x: 1.92
+    y: 0.22
+    z: 4.55
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: lower_body
+  type: block
+  material: WHITE_CONCRETE
+  position:
+    x: 0.0
+    y: 0.55
+    z: 0.0
+  scale:
+    x: 2.14
+    y: 0.42
+    z: 4.55
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: mid_body
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 1.18
+    z: 0.0
+  scale:
+    x: 2.12
+    y: 0.88
+    z: 4.55
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: window_band
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: 0.0
+    y: 1.86
+    z: 0.0
+  scale:
+    x: 2.1
+    y: 0.72
+    z: 4.55
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: upper_body
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 2.28
+    z: 0.0
+  scale:
+    x: 2.12
+    y: 0.18
+    z: 4.55
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof
+  type: block
+  material: WHITE_CONCRETE
+  position:
+    x: 0.0
+    y: 2.48
+    z: 0.0
+  scale:
+    x: 2.18
+    y: 0.22
+    z: 4.55
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_lower_trim
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: -1.09
+    y: 0.48
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.2
+    z: 4.37
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_roof_trim
+  type: block
+  material: WHITE_CONCRETE
+  position:
+    x: -1.09
+    y: 2.4
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.1
+    z: 4.41
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_lower_trim
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: 1.09
+    y: 0.48
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.2
+    z: 4.37
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_roof_trim
+  type: block
+  material: WHITE_CONCRETE
+  position:
+    x: 1.09
+    y: 2.4
+    z: 0.0
+  scale:
+    x: 0.06
+    y: 0.1
+    z: 4.41
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_window_1
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.115
+    y: 1.87
+    z: 1.42
+  scale:
+    x: 0.04
+    y: 0.68
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_1_panel
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: -1.085
+    y: 1.46
+    z: 0.46
+  scale:
+    x: 0.07
+    y: 1.52
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_1_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.12
+    y: 1.9
+    z: 0.46
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.48
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_1_sill
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: -1.12
+    y: 0.74
+    z: 0.46
+  scale:
+    x: 0.04
+    y: 0.13
+    z: 0.58
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_window_2
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.115
+    y: 1.87
+    z: -0.55
+  scale:
+    x: 0.04
+    y: 0.68
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_2_panel
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: -1.085
+    y: 1.46
+    z: -1.48
+  scale:
+    x: 0.07
+    y: 1.52
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_2_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: -1.12
+    y: 1.9
+    z: -1.48
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.48
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: left_door_2_sill
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: -1.12
+    y: 0.74
+    z: -1.48
+  scale:
+    x: 0.04
+    y: 0.13
+    z: 0.58
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_window_1
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.115
+    y: 1.87
+    z: 1.42
+  scale:
+    x: 0.04
+    y: 0.68
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_1_panel
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 1.085
+    y: 1.46
+    z: 0.46
+  scale:
+    x: 0.07
+    y: 1.52
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_1_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.12
+    y: 1.9
+    z: 0.46
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.48
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_1_sill
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: 1.12
+    y: 0.74
+    z: 0.46
+  scale:
+    x: 0.04
+    y: 0.13
+    z: 0.58
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_window_2
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.115
+    y: 1.87
+    z: -0.55
+  scale:
+    x: 0.04
+    y: 0.68
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_2_panel
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 1.085
+    y: 1.46
+    z: -1.48
+  scale:
+    x: 0.07
+    y: 1.52
+    z: 0.68
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_2_glass
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 1.12
+    y: 1.9
+    z: -1.48
+  scale:
+    x: 0.04
+    y: 0.7
+    z: 0.48
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: right_door_2_sill
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: 1.12
+    y: 0.74
+    z: -1.48
+  scale:
+    x: 0.04
+    y: 0.13
+    z: 0.58
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_panel
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 1.35
+    z: 2.3
+  scale:
+    x: 2.02
+    y: 1.76
+    z: 0.12
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_mask
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: 0.0
+    y: 1.62
+    z: 2.3299999999999996
+  scale:
+    x: 1.92
+    y: 1.58
+    z: 0.08
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_windscreen
+  type: block
+  material: BLACK_STAINED_GLASS
+  position:
+    x: 0.0
+    y: 1.95
+    z: 2.3499999999999996
+  scale:
+    x: 1.55
+    y: 0.82
+    z: 0.05
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_route_display
+  type: block
+  material: LIME_STAINED_GLASS
+  position:
+    x: 0.0
+    y: 2.31
+    z: 2.3699999999999997
+  scale:
+    x: 0.92
+    y: 0.14
+    z: 0.05
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_lower_panel
+  type: block
+  material: RED_CONCRETE
+  position:
+    x: 0.0
+    y: 0.72
+    z: 2.3299999999999996
+  scale:
+    x: 2.08
+    y: 0.45
+    z: 0.1
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_trim
+  type: block
+  material: WHITE_CONCRETE
+  position:
+    x: 0.0
+    y: 0.47
+    z: 2.3499999999999996
+  scale:
+    x: 2.12
+    y: 0.18
+    z: 0.1
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_bumper
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 0.26
+    z: 2.3999999999999995
+  scale:
+    x: 1.78
+    y: 0.16
+    z: 0.18
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_marker_left
+  type: block
+  material: SEA_LANTERN
+  position:
+    x: -0.7
+    y: 0.92
+    z: 2.4099999999999997
+  scale:
+    x: 0.22
+    y: 0.18
+    z: 0.08
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_marker_right
+  type: block
+  material: SEA_LANTERN
+  position:
+    x: 0.7
+    y: 0.92
+    z: 2.4099999999999997
+  scale:
+    x: 0.22
+    y: 0.18
+    z: 0.08
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_lower_light_left
+  type: block
+  material: SEA_LANTERN
+  position:
+    x: -0.48
+    y: 0.72
+    z: 2.4199999999999995
+  scale:
+    x: 0.18
+    y: 0.14
+    z: 0.08
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: front_cab_lower_light_right
+  type: block
+  material: SEA_LANTERN
+  position:
+    x: 0.48
+    y: 0.72
+    z: 2.4199999999999995
+  scale:
+    x: 0.18
+    y: 0.14
+    z: 0.08
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_outer
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.38
+    z: -2.3
+  scale:
+    x: 1.9
+    y: 2.1
+    z: 0.24
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_inner
+  type: block
+  material: POLISHED_BLACKSTONE
+  position:
+    x: 0.0
+    y: 1.38
+    z: -2.3
+  scale:
+    x: 1.72
+    y: 1.92
+    z: 0.28
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_1
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 0.62
+    z: -2.3
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_2
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 0.95
+    z: -2.3
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_3
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.28
+    z: -2.3
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_4
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.61
+    z: -2.3
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_5
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 1.94
+    z: -2.3
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: rear_articulation_rib_6
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 2.27
+    z: -2.3
+  scale:
+    x: 1.82
+    y: 0.07
+    z: 0.31
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: bogie_frame
+  type: block
+  material: DEEPSLATE_TILES
+  position:
+    x: 0.0
+    y: 0.27
+    z: -1.25
+  scale:
+    x: 1.62
+    y: 0.22
+    z: 0.92
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: bogie_wheel_left
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: -1.04
+    y: 0.28
+    z: -1.25
+  scale:
+    x: 0.2
+    y: 0.52
+    z: 0.74
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: bogie_wheel_right
+  type: block
+  material: BLACK_CONCRETE
+  position:
+    x: 1.04
+    y: 0.28
+    z: -1.25
+  scale:
+    x: 0.2
+    y: 0.52
+    z: 0.74
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof_equipment_center
+  type: block
+  material: LIGHT_GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 2.66
+    z: 0.15
+  scale:
+    x: 0.78
+    y: 0.18
+    z: 0.72
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof_equipment_rear
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 2.78
+    z: -0.63
+  scale:
+    x: 0.58
+    y: 0.15
+    z: 0.45
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+- id: roof_equipment_front
+  type: block
+  material: GRAY_CONCRETE
+  position:
+    x: 0.0
+    y: 2.78
+    z: 0.93
+  scale:
+    x: 0.58
+    y: 0.15
+    z: 0.45
+  rotation-degrees:
+    x: 0.0
+    y: 0.0
+    z: 0.0

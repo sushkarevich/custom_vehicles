@@ -1,0 +1,11 @@
+node_modules/
+out/
+release/
+coverage/
+.vite/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

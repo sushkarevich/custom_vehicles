@@ -1,0 +1,59 @@
+vehicle:
+  max-speed: 0.65
+  reverse-speed: 0.30
+  acceleration: 0.035
+  braking: 0.055
+  passive-drag: 0.018
+  steering-degrees-per-tick: 2.8
+  step-height: 1.0
+  sound-volume: 1.0
+  seat-offset:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+
+train:
+  max-speed: 0.42
+  reverse-speed: 0.22
+  acceleration: 0.018
+  braking: 0.035
+  passive-drag: 0.006
+  wagon-spacing: 6.20
+  max-wagons: 6
+  sound-volume: 1.0
+  seat-offset:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+
+autopilot:
+  max-active-vehicles: 6
+  obstacle-distance: 10.0
+  switch-activation-distance: 12.0
+  no-progress-timeout-ticks: 600
+  debug-interval-ticks: 40
+
+messages:
+  prefix: "&6[CustomVehicles] "
+  vehicle-given: "&aВыдан легковой автомобиль."
+  vehicle-placed: "&aАвтомобиль установлен."
+  train-given: "&aВыдан головной вагон 81-717."
+  train-placed: "&aГоловной вагон 81-717 установлен. Пассажирские вагоны подцепляются отдельно."
+  train-rails-only: "&cСостав можно установить только на рельсы."
+  train-placement-failed: "&cНе удалось определить направление рельсов для локомотива."
+  tram-given: "&aВыдан трёхсекционный трамвай Витязь-М."
+  tram-placed: "&aТрамвай Витязь-М установлен на рельсы."
+  tram-placement-failed: "&cДля трёх секций Витязя-М не хватает непрерывного пути позади."
+  wagon-given: "&aВыдан пассажирский вагон."
+  wagon-use-on-train: "&eЭтим предметом нужно нажать по локомотиву или подцепленному вагону."
+  wagon-train-only: "&cВагон можно подцепить только к поезду."
+  wagon-attached: "&aВагон подцеплен."
+  wagon-detached: "&eПоследний вагон отцеплен и возвращён предметом."
+  wagon-none: "&eУ состава нет вагонов для отцепления."
+  wagon-limit: "&cДостигнут установленный лимит вагонов."
+  wagon-no-track: "&cПозади состава не хватает непрерывных рельсов для нового вагона."
+  wagon-seats-full: "&eВ этом вагоне оба пассажирских места заняты."
+  wagon-item-required: "&eДля сцепки нужен предмет пассажирского вагона в инвентаре."
+  vehicle-missing: "&cЭтот транспорт больше не существует."
+  vehicle-removed: "&eТранспорт убран и возвращён предметами."
+  no-permission: "&cНедостаточно прав."
