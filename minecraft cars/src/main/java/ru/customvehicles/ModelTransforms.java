@@ -45,6 +45,17 @@ final class ModelTransforms {
         return new Quaternionf().rotationXYZ(radiansX, radiansY, radiansZ).normalize();
     }
 
+    static Quaternionf localRotation(
+            ModelDefinition.ForwardDirection modelForward,
+            ModelVector rotationDegrees
+    ) {
+        Quaternionf result = new Quaternionf();
+        if (modelForward == ModelDefinition.ForwardDirection.NEGATIVE_Z) {
+            result.rotateY((float) Math.PI);
+        }
+        return result.mul(partRotation(rotationDegrees)).normalize();
+    }
+
     static Quaternionf combinedRotation(
             Quaternionf modelOrientation,
             ModelVector rotationDegrees

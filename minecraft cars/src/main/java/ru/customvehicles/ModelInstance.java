@@ -116,6 +116,23 @@ final class ModelInstance {
             display.setTeleportDuration(definition.display().teleportDuration());
             display.setPersistent(true);
             tag(display);
+
+            Quaternionf localRotation = ModelTransforms.localRotation(
+                    definition.forwardDirection(),
+                    part.rotationDegrees()
+            );
+            Transformation transformation = display.getTransformation();
+            transformation.getTranslation().set(
+                    ModelTransforms.centeredTranslation(part.scale(), localRotation)
+            );
+            transformation.getLeftRotation().set(localRotation);
+            transformation.getScale().set(
+                    (float) part.scale().x(),
+                    (float) part.scale().y(),
+                    (float) part.scale().z()
+            );
+            transformation.getRightRotation().identity();
+            display.setTransformation(transformation);
         }
     }
 
@@ -137,6 +154,16 @@ final class ModelInstance {
                 forwardZ,
                 definition.forwardDirection()
         );
+        double directionLength = Math.sqrt(
+                forwardX * forwardX + forwardY * forwardY + forwardZ * forwardZ
+        );
+        double normalizedX = forwardX / directionLength;
+        double normalizedY = forwardY / directionLength;
+        double normalizedZ = forwardZ / directionLength;
+        float yaw = (float) Math.toDegrees(Math.atan2(-normalizedX, normalizedZ));
+        float pitch = (float) -Math.toDegrees(Math.asin(
+                Math.max(-1.0, Math.min(1.0, normalizedY))
+        ));
         if (interaction != null && interaction.isValid()) {
             ModelDefinition.Interaction interactionDefinition = definition.interaction()
                     .orElseThrow();
@@ -144,7 +171,10 @@ final class ModelInstance {
                     orientation,
                     interactionDefinition.offset()
             );
-            interaction.teleport(origin.clone().add(offset.x, offset.y, offset.z));
+            Location location = origin.clone().add(offset.x, offset.y, offset.z);
+            location.setYaw(yaw);
+            location.setPitch(pitch);
+            interaction.teleport(location);
         }
         for (PartEntity partEntity : parts) {
             BlockDisplay display = partEntity.display();
@@ -154,26 +184,8 @@ final class ModelInstance {
             ModelPartDefinition part = partEntity.definition();
             Vector3f offset = ModelTransforms.worldOffset(orientation, part.position());
             Location location = origin.clone().add(offset.x, offset.y, offset.z);
-            location.setYaw(0.0F);
-            location.setPitch(0.0F);
-
-            Quaternionf rotation = ModelTransforms.combinedRotation(
-                    orientation,
-                    part.rotationDegrees()
-            );
-            Transformation transformation = display.getTransformation();
-            transformation.getTranslation().set(
-                    ModelTransforms.centeredTranslation(part.scale(), rotation)
-            );
-            transformation.getLeftRotation().set(rotation);
-            transformation.getScale().set(
-                    (float) part.scale().x(),
-                    (float) part.scale().y(),
-                    (float) part.scale().z()
-            );
-            transformation.getRightRotation().identity();
-            display.setInterpolationDelay(0);
-            display.setTransformation(transformation);
+            location.setYaw(yaw);
+            location.setPitch(pitch);
             display.teleport(location);
         }
     }

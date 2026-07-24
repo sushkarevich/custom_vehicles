@@ -111,6 +111,29 @@ class ModelTransformsTest {
     }
 
     @Test
+    void staticLocalRotationKeepsRootMotionOutOfDisplayTransformation() {
+        ModelVector partRotation = new ModelVector(18.0, -27.0, 9.0);
+
+        Quaternionf positiveZ = ModelTransforms.localRotation(
+                ModelDefinition.ForwardDirection.POSITIVE_Z,
+                partRotation
+        );
+        assertVector(
+                ModelTransforms.partRotation(partRotation).transform(new Vector3f(0, 0, 1)),
+                positiveZ.transform(new Vector3f(0, 0, 1))
+        );
+
+        Quaternionf negativeZ = ModelTransforms.localRotation(
+                ModelDefinition.ForwardDirection.NEGATIVE_Z,
+                new ModelVector(0.0, 0.0, 0.0)
+        );
+        assertVector(
+                new Vector3f(0.0F, 0.0F, -1.0F),
+                negativeZ.transform(new Vector3f(0, 0, 1))
+        );
+    }
+
+    @Test
     void translationKeepsScaledRotatedBlockCenteredOnPartOrigin() {
         ModelVector scale = new ModelVector(2.0, 4.0, 6.0);
         Quaternionf rotation = new Quaternionf().rotationXYZ(0.3F, 1.1F, -0.4F);
