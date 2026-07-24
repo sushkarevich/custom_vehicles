@@ -89,7 +89,7 @@ public final class CustomVehiclesPlugin extends JavaPlugin {
         vehicleManager.restoreSaved();
         autopilotManager.restore();
         getServer().getScheduler().runTaskTimer(this, () -> vehicleManager.tick(inputs), 1L, 1L);
-        getLogger().info("CustomVehicles 1.2.1 is ready.");
+        getLogger().info("CustomVehicles " + getPluginMeta().getVersion() + " is ready.");
     }
 
     @Override

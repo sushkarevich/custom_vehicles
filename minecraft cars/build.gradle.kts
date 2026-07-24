@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "ru.customvehicles"
-version = "1.2.1"
+version = "1.3.0-beta.1"
 
 val materialGeneratorSourceSet = sourceSets.create("materialGenerator") {
     java.srcDir("src/materialGenerator/java")
