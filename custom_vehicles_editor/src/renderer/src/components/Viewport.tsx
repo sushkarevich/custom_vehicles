@@ -306,8 +306,7 @@ function Scene({
         ref={controlsRef}
         enabled={!dragging}
         makeDefault
-        enableDamping
-        dampingFactor={0.08}
+        enableDamping={false}
         minDistance={0.2}
         maxDistance={400}
         zoomToCursor
