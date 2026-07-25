@@ -33,4 +33,14 @@ describe('хранилище документа', () => {
     expect(useDocumentStore.getState().kind).toBe('variant')
     expect(useDocumentStore.getState().selectedPartId).toBeNull()
   })
+
+  it('меняет document epoch только при загрузке или создании документа', () => {
+    const initialEpoch = useDocumentStore.getState().documentEpoch
+    useDocumentStore.getState().selectPart(null)
+    useDocumentStore.getState().update((document) => ({ ...document, id: 'edited_model' }))
+    expect(useDocumentStore.getState().documentEpoch).toBe(initialEpoch)
+
+    useDocumentStore.getState().reset(createDefaultModel())
+    expect(useDocumentStore.getState().documentEpoch).toBe(initialEpoch + 1)
+  })
 })

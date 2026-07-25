@@ -2,15 +2,8 @@ import { useEffect } from 'react'
 import { isModelDefinition } from '../../../shared/schema'
 import { useDocumentStore } from '../../store/document-store'
 import { deletePart, duplicatePart } from '../../store/operations'
+import { isKeyboardEditingTarget } from '../editing-target'
 import type { TransformMode } from '../types'
-
-function isEditableTarget(target: EventTarget | null): boolean {
-  if (!(target instanceof HTMLElement)) return false
-  return (
-    target.matches('input, textarea, select, [contenteditable="true"]') ||
-    target.closest('input, textarea, select, [contenteditable="true"]') !== null
-  )
-}
 
 export function useKeyboardShortcuts(options: {
   setTransformMode: (mode: TransformMode) => void
@@ -21,7 +14,7 @@ export function useKeyboardShortcuts(options: {
     const handleKeyDown = (event: KeyboardEvent): void => {
       const command = event.metaKey || event.ctrlKey
       const key = event.key.toLocaleLowerCase('en-US')
-      const editable = isEditableTarget(event.target)
+      const editable = isKeyboardEditingTarget(event.target)
 
       if (command && key === 's') {
         event.preventDefault()
@@ -30,17 +23,8 @@ export function useKeyboardShortcuts(options: {
       }
       if (editable) return
 
-      if (command && key === 'z') {
-        event.preventDefault()
-        if (event.shiftKey) useDocumentStore.getState().redo()
-        else useDocumentStore.getState().undo()
-        return
-      }
-      if (command && key === 'y') {
-        event.preventDefault()
-        useDocumentStore.getState().redo()
-        return
-      }
+      // Undo/redo accelerators are owned by the Electron main process. Keeping
+      // them out of this DOM listener prevents one key press from executing twice.
       if (command && key === 'd') {
         event.preventDefault()
         const state = useDocumentStore.getState()

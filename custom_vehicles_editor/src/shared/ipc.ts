@@ -1,3 +1,5 @@
+import type { EditorHistoryCommand, EditorHistoryState } from './history-commands'
+
 export const IPC_CHANNELS = {
   openDocument: 'document:open',
   openRecent: 'document:open-recent',
@@ -6,7 +8,9 @@ export const IPC_CHANNELS = {
   saveDocument: 'document:save',
   exportDocument: 'document:export',
   confirmDiscard: 'dialog:confirm-discard',
-  setDirty: 'window:set-dirty'
+  setDirty: 'window:set-dirty',
+  editorCommand: 'editor:command',
+  historyState: 'editor:history-state'
 } as const
 
 export interface OpenedDocument {
@@ -48,4 +52,6 @@ export interface EditorApi {
   exportDocument(request: ExportDocumentRequest): Promise<SaveResult | null>
   confirmDiscard(documentName: string): Promise<boolean>
   setDirty(dirty: boolean): void
+  onHistoryCommand(listener: (command: EditorHistoryCommand) => void): () => void
+  setHistoryState(state: EditorHistoryState): void
 }

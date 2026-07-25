@@ -1,6 +1,8 @@
 import { join } from 'node:path'
 import { app, BrowserWindow, dialog, ipcMain, session, shell } from 'electron'
+import { isEditorHistoryState } from '../shared/history-commands'
 import { IPC_CHANNELS } from '../shared/ipc'
+import { installApplicationMenu } from './application-menu'
 import { registerIpcHandlers } from './ipc'
 
 let rendererDirty = false
@@ -30,13 +32,21 @@ function createWindow(): void {
   })
 
   unregisterIpc = registerIpcHandlers(window)
+  const applicationMenu = installApplicationMenu(window)
 
-  ipcMain.on(IPC_CHANNELS.setDirty, (event, value: unknown) => {
+  const handleDirty = (event: Electron.IpcMainEvent, value: unknown): void => {
     if (event.sender === window.webContents && typeof value === 'boolean') {
       rendererDirty = value
       window.setDocumentEdited(value)
     }
-  })
+  }
+  const handleHistoryState = (event: Electron.IpcMainEvent, value: unknown): void => {
+    if (event.sender === window.webContents && isEditorHistoryState(value)) {
+      applicationMenu.updateHistoryState(value)
+    }
+  }
+  ipcMain.on(IPC_CHANNELS.setDirty, handleDirty)
+  ipcMain.on(IPC_CHANNELS.historyState, handleHistoryState)
 
   window.on('ready-to-show', () => window.show())
   window.on('close', (event) => {
@@ -68,7 +78,9 @@ function createWindow(): void {
   window.on('closed', () => {
     unregisterIpc?.()
     unregisterIpc = null
-    ipcMain.removeAllListeners(IPC_CHANNELS.setDirty)
+    applicationMenu.dispose()
+    ipcMain.removeListener(IPC_CHANNELS.setDirty, handleDirty)
+    ipcMain.removeListener(IPC_CHANNELS.historyState, handleHistoryState)
   })
 
   window.webContents.setWindowOpenHandler(({ url }) => {

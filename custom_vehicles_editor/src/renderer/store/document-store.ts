@@ -26,6 +26,7 @@ interface DocumentStore {
   kind: DocumentKind
   filePath: string | null
   selectedPartId: string | null
+  documentEpoch: number
   savedSignature: string
   dirty: boolean
   reset(document: EditorDocument, filePath?: string | null): void
@@ -42,7 +43,13 @@ interface DocumentStore {
 
 function initialState(): Pick<
   DocumentStore,
-  'history' | 'kind' | 'filePath' | 'selectedPartId' | 'savedSignature' | 'dirty'
+  | 'history'
+  | 'kind'
+  | 'filePath'
+  | 'selectedPartId'
+  | 'documentEpoch'
+  | 'savedSignature'
+  | 'dirty'
 > {
   const document = createDefaultModel()
   return {
@@ -50,6 +57,7 @@ function initialState(): Pick<
     kind: 'model',
     filePath: null,
     selectedPartId: document.parts[0]?.id ?? null,
+    documentEpoch: 0,
     savedSignature: signature(document),
     dirty: false
   }
@@ -59,36 +67,39 @@ export const useDocumentStore = create<DocumentStore>((set) => ({
   ...initialState(),
   reset(document, filePath = null) {
     const copied = cloneDocument(document)
-    set({
+    set((state) => ({
       history: createHistory(copied),
       kind: isModelDefinition(copied) ? 'model' : 'variant',
       filePath,
       selectedPartId: isModelDefinition(copied) ? (copied.parts[0]?.id ?? null) : null,
+      documentEpoch: state.documentEpoch + 1,
       savedSignature: signature(copied),
       dirty: false
-    })
+    }))
   },
   newModel() {
     const document = createDefaultModel()
-    set({
+    set((state) => ({
       history: createHistory(document),
       kind: 'model',
       filePath: null,
       selectedPartId: document.parts[0]?.id ?? null,
+      documentEpoch: state.documentEpoch + 1,
       savedSignature: signature(document),
       dirty: false
-    })
+    }))
   },
   newVariant() {
     const document = createDefaultVariant()
-    set({
+    set((state) => ({
       history: createHistory(document),
       kind: 'variant',
       filePath: null,
       selectedPartId: null,
+      documentEpoch: state.documentEpoch + 1,
       savedSignature: signature(document),
       dirty: false
-    })
+    }))
   },
   update(updater) {
     set((state) => {

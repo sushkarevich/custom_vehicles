@@ -1,4 +1,9 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron'
+import {
+  isEditorHistoryCommand,
+  type EditorHistoryCommand,
+  type EditorHistoryState
+} from '../shared/history-commands'
 import {
   IPC_CHANNELS,
   type ChooseSavePathRequest,
@@ -19,7 +24,16 @@ const api: EditorApi = Object.freeze({
     ipcRenderer.invoke(IPC_CHANNELS.exportDocument, request),
   confirmDiscard: (documentName: string) =>
     ipcRenderer.invoke(IPC_CHANNELS.confirmDiscard, documentName),
-  setDirty: (dirty: boolean) => ipcRenderer.send(IPC_CHANNELS.setDirty, dirty)
+  setDirty: (dirty: boolean) => ipcRenderer.send(IPC_CHANNELS.setDirty, dirty),
+  onHistoryCommand: (listener: (command: EditorHistoryCommand) => void) => {
+    const handleCommand = (_event: IpcRendererEvent, value: unknown): void => {
+      if (isEditorHistoryCommand(value)) listener(value)
+    }
+    ipcRenderer.on(IPC_CHANNELS.editorCommand, handleCommand)
+    return () => ipcRenderer.removeListener(IPC_CHANNELS.editorCommand, handleCommand)
+  },
+  setHistoryState: (state: EditorHistoryState) =>
+    ipcRenderer.send(IPC_CHANNELS.historyState, state)
 })
 
 contextBridge.exposeInMainWorld('editorApi', api)

@@ -1,4 +1,5 @@
 import type { RecentDocument } from '../../../shared/ipc'
+import type { EditorHistoryCommand } from '../../../shared/history-commands'
 import type { DocumentKind } from '../../../shared/schema'
 import type {
   CameraCommand,
@@ -25,8 +26,7 @@ interface ToolbarProps {
   onSave: () => void
   onSaveAs: () => void
   onExport: () => void
-  onUndo: () => void
-  onRedo: () => void
+  onHistoryCommand: (command: EditorHistoryCommand) => void
 }
 
 function ToolButton({
@@ -118,13 +118,23 @@ export function Toolbar(props: ToolbarProps): React.JSX.Element {
 
       <div className="toolbar-spacer" />
 
+      <div className="tool-group" aria-label="История">
+        <ToolButton
+          label="↶"
+          title="Отменить (Ctrl/Cmd+Z)"
+          disabled={!props.canUndo}
+          onClick={() => props.onHistoryCommand('undo')}
+        />
+        <ToolButton
+          label="↷"
+          title="Повторить (Ctrl+Y / Ctrl/Cmd+Shift+Z)"
+          disabled={!props.canRedo}
+          onClick={() => props.onHistoryCommand('redo')}
+        />
+      </div>
+
       {props.kind === 'model' && (
         <>
-          <div className="tool-group" aria-label="История">
-            <ToolButton label="↶" title="Отменить (Ctrl/Cmd+Z)" disabled={!props.canUndo} onClick={props.onUndo} />
-            <ToolButton label="↷" title="Повторить (Ctrl/Cmd+Shift+Z)" disabled={!props.canRedo} onClick={props.onRedo} />
-          </div>
-
           <div className="tool-group segmented" aria-label="Режим трансформации">
             {TRANSFORMS.map((entry) => (
               <ToolButton

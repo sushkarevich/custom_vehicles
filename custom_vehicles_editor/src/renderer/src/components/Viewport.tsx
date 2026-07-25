@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Canvas, type ThreeEvent, useThree } from '@react-three/fiber'
 import {
   Edges,
@@ -23,8 +23,12 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import type { ModelDefinition, ModelPart } from '../../../shared/schema'
 import { useDocumentStore } from '../../store/document-store'
 import { updatePart } from '../../store/operations'
+import { useExplicitCameraEffect } from '../hooks/useExplicitCameraEffect'
 import type { CameraCommand, ViewportSettings } from '../types'
 import { materialColor } from '../materialColor'
+
+const DEFAULT_CAMERA_POSITION: [number, number, number] = [7, 5, 8]
+const ORBIT_MOUSE_BUTTONS = { LEFT: 0, MIDDLE: 2, RIGHT: 2 } as const
 
 function partQuaternion(part: ModelPart): Quaternion {
   return new Quaternion().setFromEuler(
@@ -72,7 +76,7 @@ function CameraRig({
 }): null {
   const { camera, size } = useThree()
 
-  useEffect(() => {
+  useExplicitCameraEffect(camera, command.nonce, () => {
     const selected =
       command.view === 'focus-selected' && selectedPartId !== null
         ? modelBounds(model, selectedPartId)
@@ -142,7 +146,7 @@ function CameraRig({
       controlsRef.current.target.copy(center)
       controlsRef.current.update()
     }
-  }, [camera, command.nonce, command.view, controlsRef, model, selectedPartId, size.height, size.width])
+  })
 
   return null
 }
@@ -243,26 +247,28 @@ function PartObject({
   if (!selected || locked) return mesh
 
   return (
-    <TransformControls
-      mode={settings.transformMode}
-      space={settings.transformMode === 'translate' ? 'world' : 'local'}
-      size={0.82}
-      translationSnap={settings.snapping ? settings.translationSnap : null}
-      rotationSnap={settings.snapping ? MathUtils.degToRad(settings.rotationSnap) : null}
-      scaleSnap={settings.snapping ? settings.scaleSnap : null}
-      onMouseDown={() => {
-        beginTransaction()
-        onDragging(true)
-      }}
-      onObjectChange={commitTransform}
-      onMouseUp={() => {
-        commitTransform()
-        endTransaction()
-        onDragging(false)
-      }}
-    >
+    <>
+      <TransformControls
+        object={meshRef as React.RefObject<Mesh>}
+        mode={settings.transformMode}
+        space={settings.transformMode === 'translate' ? 'world' : 'local'}
+        size={0.82}
+        translationSnap={settings.snapping ? settings.translationSnap : null}
+        rotationSnap={settings.snapping ? MathUtils.degToRad(settings.rotationSnap) : null}
+        scaleSnap={settings.snapping ? settings.scaleSnap : null}
+        onMouseDown={() => {
+          beginTransaction()
+          onDragging(true)
+        }}
+        onObjectChange={commitTransform}
+        onMouseUp={() => {
+          commitTransform()
+          endTransaction()
+          onDragging(false)
+        }}
+      />
       {mesh}
-    </TransformControls>
+    </>
   )
 }
 
@@ -288,8 +294,8 @@ function Scene({
     <>
       <color attach="background" args={['#11161d']} />
       <fog attach="fog" args={['#11161d', 28, 110]} />
-      <PerspectiveCamera makeDefault={settings.cameraType === 'perspective'} position={[7, 5, 8]} fov={43} near={0.01} far={2000} />
-      <OrthographicCamera makeDefault={settings.cameraType === 'orthographic'} position={[7, 5, 8]} zoom={70} near={-2000} far={4000} />
+      <PerspectiveCamera makeDefault={settings.cameraType === 'perspective'} position={DEFAULT_CAMERA_POSITION} fov={43} near={0.01} far={2000} />
+      <OrthographicCamera makeDefault={settings.cameraType === 'orthographic'} position={DEFAULT_CAMERA_POSITION} zoom={70} near={-2000} far={4000} />
       <CameraRig
         model={model}
         selectedPartId={selectedPartId}
@@ -306,7 +312,7 @@ function Scene({
         maxDistance={400}
         zoomToCursor
         screenSpacePanning
-        mouseButtons={{ LEFT: 0, MIDDLE: 2, RIGHT: 2 }}
+        mouseButtons={ORBIT_MOUSE_BUTTONS}
       />
       <ambientLight intensity={1.25} />
       <hemisphereLight args={['#d5eaff', '#202631', 1.35]} />

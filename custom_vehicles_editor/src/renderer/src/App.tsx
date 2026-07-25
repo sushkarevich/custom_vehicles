@@ -1,4 +1,13 @@
-import { Component, useCallback, useEffect, useMemo, useState, type ErrorInfo, type ReactNode } from 'react'
+import {
+  Component,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ErrorInfo,
+  type ReactNode
+} from 'react'
 import { isModelDefinition, type ValidationIssue } from '../../shared/schema'
 import { validateModel, validateVariant } from '../../shared/validation'
 import { useDocumentStore } from '../store/document-store'
@@ -11,6 +20,7 @@ import { VariantSummary } from './components/VariantSummary'
 import { VariantWorkspace } from './components/VariantWorkspace'
 import { Viewport } from './components/Viewport'
 import { useFileWorkflows } from './hooks/useFileWorkflows'
+import { useHistoryIntegration } from './hooks/useHistoryIntegration'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import type { CameraCommand, CameraView, TransformMode, ViewportSettings } from './types'
 
@@ -72,10 +82,9 @@ function EditorApp(): React.JSX.Element {
   const filePath = useDocumentStore((state) => state.filePath)
   const dirty = useDocumentStore((state) => state.dirty)
   const selectedPartId = useDocumentStore((state) => state.selectedPartId)
+  const documentEpoch = useDocumentStore((state) => state.documentEpoch)
   const canUndo = useDocumentStore((state) => state.history.past.length > 0)
   const canRedo = useDocumentStore((state) => state.history.future.length > 0)
-  const undo = useDocumentStore((state) => state.undo)
-  const redo = useDocumentStore((state) => state.redo)
   const [loadIssues, setLoadIssues] = useState<ValidationIssue[]>([])
   const workflow = useFileWorkflows(setLoadIssues)
   const [settings, setSettingsState] = useState<ViewportSettings>(INITIAL_VIEWPORT_SETTINGS)
@@ -83,10 +92,19 @@ function EditorApp(): React.JSX.Element {
     view: 'perspective',
     nonce: 0
   })
+  const previousDocumentEpoch = useRef(documentEpoch)
+  const executeHistoryCommand = useHistoryIntegration(canUndo, canRedo)
 
   useEffect(() => {
     window.editorApi.setDirty(dirty)
   }, [dirty])
+
+  useEffect(() => {
+    if (previousDocumentEpoch.current === documentEpoch) return
+    previousDocumentEpoch.current = documentEpoch
+    setSettingsState((current) => ({ ...current, cameraType: 'perspective' }))
+    setCameraCommand((current) => ({ view: 'perspective', nonce: current.nonce + 1 }))
+  }, [documentEpoch])
 
   const setSettings = useCallback((patch: Partial<ViewportSettings>) => {
     setSettingsState((current) => ({ ...current, ...patch }))
@@ -142,8 +160,7 @@ function EditorApp(): React.JSX.Element {
         onSave={() => void workflow.save()}
         onSaveAs={() => void workflow.saveAs()}
         onExport={() => void workflow.exportDocument()}
-        onUndo={undo}
-        onRedo={redo}
+        onHistoryCommand={executeHistoryCommand}
       />
       <div className={`workspace ${kind === 'variant' ? 'variant-mode' : ''}`}>
         {model !== null ? (
