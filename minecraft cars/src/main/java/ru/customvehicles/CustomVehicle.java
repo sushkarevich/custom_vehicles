@@ -161,17 +161,15 @@ final class CustomVehicle implements ManagedVehicle {
         }
 
         double throttle = input.forward();
-        double target = throttle >= 0.0
-                ? throttle * settings.maxSpeed()
-                : throttle * settings.reverseSpeed();
-        double change = Math.abs(target) < Math.abs(speed)
-                ? settings.braking()
-                : settings.acceleration();
-        speed = VehicleMath.approach(speed, target, change);
-
-        if (Math.abs(throttle) < 0.01) {
-            speed = VehicleMath.approach(speed, 0.0, settings.passiveDrag());
-        }
+        speed = VehicleMath.nextSpeed(
+                speed,
+                throttle,
+                settings.maxSpeed(),
+                settings.reverseSpeed(),
+                settings.acceleration(),
+                settings.braking(),
+                settings.passiveDrag()
+        );
         if (Math.abs(speed) < 0.001) {
             speed = 0.0;
         }

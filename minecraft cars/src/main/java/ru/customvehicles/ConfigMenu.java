@@ -15,6 +15,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -58,6 +59,11 @@ final class ConfigMenu implements Listener {
                     "vehicle.seat-offset.z", "Посадка: назад / вперёд",
                     Material.SPYGLASS, -2.00, 2.00, 0.05, 2, 0.0
             )),
+            new SlotSetting(28, setting(
+                    "vehicle.passive-drag", "Сопротивление накату",
+                    Material.SUGAR, 0.001, 0.030, 0.001, 3, 0.004,
+                    "Меньше значение — транспорт дольше катится"
+            )),
             new SlotSetting(31, setting(
                     "vehicle.step-height", "Высота преодоления",
                     Material.STONE_SLAB, 0.25, 1.50, 0.25, 2, 1.0
@@ -96,6 +102,11 @@ final class ConfigMenu implements Listener {
             new SlotSetting(24, setting(
                     "train.seat-offset.z", "Посадка: назад / вперёд",
                     Material.SPYGLASS, -2.00, 2.00, 0.05, 2, 0.0
+            )),
+            new SlotSetting(27, setting(
+                    "train.passive-drag", "Сопротивление накату",
+                    Material.SUGAR, 0.001, 0.030, 0.001, 3, 0.002,
+                    "Меньше значение — состав дольше катится"
             )),
             new SlotSetting(29, setting(
                     "train.max-wagons", "Максимум вагонов",
@@ -293,19 +304,22 @@ final class ConfigMenu implements Listener {
     }
 
     private ItemStack settingItem(Setting setting, double value) {
+        List<Component> lore = new ArrayList<>();
+        if (setting.hint() != null) {
+            lore.add(Component.text(setting.hint(), NamedTextColor.YELLOW));
+        }
+        lore.add(Component.text(
+                "Диапазон: " + format(setting.minimum(), setting.decimals())
+                        + " … " + format(setting.maximum(), setting.decimals()),
+                NamedTextColor.DARK_GRAY
+        ));
+        lore.add(Component.text("ЛКМ +  |  ПКМ −", NamedTextColor.GRAY));
+        lore.add(Component.text("Shift: шаг ×5", NamedTextColor.GRAY));
         return item(
                 setting.material(),
                 setting.label() + ": " + format(value, setting.decimals()),
                 NamedTextColor.AQUA,
-                List.of(
-                        Component.text(
-                                "Диапазон: " + format(setting.minimum(), setting.decimals())
-                                        + " … " + format(setting.maximum(), setting.decimals()),
-                                NamedTextColor.DARK_GRAY
-                        ),
-                        Component.text("ЛКМ +  |  ПКМ −", NamedTextColor.GRAY),
-                        Component.text("Shift: шаг ×5", NamedTextColor.GRAY)
-                )
+                lore
         );
     }
 
@@ -348,7 +362,41 @@ final class ConfigMenu implements Listener {
             int decimals,
             double defaultValue
     ) {
-        return new Setting(path, label, material, minimum, maximum, step, decimals, defaultValue);
+        return setting(
+                path,
+                label,
+                material,
+                minimum,
+                maximum,
+                step,
+                decimals,
+                defaultValue,
+                null
+        );
+    }
+
+    private static Setting setting(
+            String path,
+            String label,
+            Material material,
+            double minimum,
+            double maximum,
+            double step,
+            int decimals,
+            double defaultValue,
+            String hint
+    ) {
+        return new Setting(
+                path,
+                label,
+                material,
+                minimum,
+                maximum,
+                step,
+                decimals,
+                defaultValue,
+                hint
+        );
     }
 
     private static Map<Integer, Setting> settings(SlotSetting... entries) {
@@ -391,7 +439,8 @@ final class ConfigMenu implements Listener {
             double maximum,
             double step,
             int decimals,
-            double defaultValue
+            double defaultValue,
+            String hint
     ) {
     }
 

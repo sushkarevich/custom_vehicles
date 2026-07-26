@@ -3,7 +3,7 @@ vehicle:
   reverse-speed: 0.30
   acceleration: 0.035
   braking: 0.055
-  passive-drag: 0.018
+  passive-drag: 0.004
   steering-degrees-per-tick: 2.8
   step-height: 1.0
   sound-volume: 1.0
@@ -17,7 +17,7 @@ train:
   reverse-speed: 0.22
   acceleration: 0.018
   braking: 0.035
-  passive-drag: 0.006
+  passive-drag: 0.002
   wagon-spacing: 6.20
   max-wagons: 6
   sound-volume: 1.0
