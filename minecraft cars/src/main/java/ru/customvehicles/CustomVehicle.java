@@ -31,6 +31,8 @@ final class CustomVehicle implements ManagedVehicle {
     private int soundTicks;
     private int hornCooldown;
     private int collisionCooldown;
+    private int gearShiftCooldown;
+    private int currentGear = 1;
     private boolean hornHeld;
 
     CustomVehicle(
@@ -205,6 +207,9 @@ final class CustomVehicle implements ManagedVehicle {
         if (collisionCooldown > 0) {
             collisionCooldown--;
         }
+        if (gearShiftCooldown > 0) {
+            gearShiftCooldown--;
+        }
 
         if (input.horn() && !hornHeld && hornCooldown == 0) {
             playHorn(settings);
@@ -215,10 +220,17 @@ final class CustomVehicle implements ManagedVehicle {
         if (driver() == null || settings.soundVolume() <= 0.0) {
             return;
         }
-        double speedRatio = Math.min(
-                1.0,
-                Math.abs(speed) / Math.max(0.01, settings.maxSpeed())
-        );
+        int targetGear = VehicleMath.forwardGear(speed, settings.maxSpeed());
+        if (targetGear == 0) {
+            currentGear = 1;
+        } else if (targetGear != currentGear) {
+            boolean upshift = targetGear > currentGear;
+            currentGear = targetGear;
+            if (upshift && input.forward() > 0.1 && gearShiftCooldown == 0) {
+                playGearShift(settings, targetGear);
+                gearShiftCooldown = 8;
+            }
+        }
         float volume = soundVolume(settings.soundVolume());
         if (Math.abs(speed) > 0.015) {
             if (soundTicks % 6 == 0) {
@@ -227,7 +239,7 @@ final class CustomVehicle implements ManagedVehicle {
                         Sound.ENTITY_MINECART_RIDING,
                         SoundCategory.PLAYERS,
                         volume * 0.28F,
-                        (float) (0.55 + speedRatio * 0.95)
+                        VehicleMath.enginePitch(speed, settings.maxSpeed(), currentGear)
                 );
             }
         } else if (soundTicks % 24 == 0) {
@@ -239,6 +251,25 @@ final class CustomVehicle implements ManagedVehicle {
                     0.65F
             );
         }
+    }
+
+    private void playGearShift(VehicleSettings settings, int gear) {
+        float volume = soundVolume(settings.soundVolume());
+        World world = chassisLocation.getWorld();
+        world.playSound(
+                chassisLocation,
+                Sound.BLOCK_PISTON_CONTRACT,
+                SoundCategory.PLAYERS,
+                volume * 0.18F,
+                1.35F + gear * 0.08F
+        );
+        world.playSound(
+                chassisLocation,
+                Sound.ENTITY_MINECART_RIDING,
+                SoundCategory.PLAYERS,
+                volume * 0.22F,
+                0.58F
+        );
     }
 
     private void playHorn(VehicleSettings settings) {

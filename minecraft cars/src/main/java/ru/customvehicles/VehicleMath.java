@@ -1,6 +1,8 @@
 package ru.customvehicles;
 
 public final class VehicleMath {
+    private static final double[] FORWARD_GEAR_LIMITS = {0.0, 0.23, 0.48, 0.73, 1.0};
+
     private VehicleMath() {
     }
 
@@ -34,6 +36,34 @@ public final class VehicleMath {
                 ? braking
                 : acceleration;
         return approach(speed, target, change);
+    }
+
+    public static int forwardGear(double speed, double maxSpeed) {
+        if (speed <= 0.0 || maxSpeed <= 0.0) {
+            return 0;
+        }
+        double ratio = Math.min(1.0, speed / maxSpeed);
+        for (int gear = 1; gear < FORWARD_GEAR_LIMITS.length; gear++) {
+            if (ratio <= FORWARD_GEAR_LIMITS[gear]) {
+                return gear;
+            }
+        }
+        return FORWARD_GEAR_LIMITS.length - 1;
+    }
+
+    public static float enginePitch(double speed, double maxSpeed, int gear) {
+        if (speed <= 0.0 || maxSpeed <= 0.0 || gear <= 0) {
+            double reverseRatio = maxSpeed <= 0.0
+                    ? 0.0
+                    : Math.min(1.0, Math.abs(speed) / maxSpeed);
+            return (float) (0.55 + reverseRatio * 0.55);
+        }
+        int boundedGear = Math.min(gear, FORWARD_GEAR_LIMITS.length - 1);
+        double ratio = Math.min(1.0, speed / maxSpeed);
+        double lower = FORWARD_GEAR_LIMITS[boundedGear - 1];
+        double upper = FORWARD_GEAR_LIMITS[boundedGear];
+        double progress = Math.max(0.0, Math.min(1.0, (ratio - lower) / (upper - lower)));
+        return (float) (0.62 + progress * 0.68);
     }
 
     public static double directionX(float yawDegrees) {
