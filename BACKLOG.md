@@ -18,30 +18,39 @@ server infrastructure. Items are ordered roughly by priority.
 ## Secure remote access for a second server administrator
 
 **Area:** server infrastructure  
-**Status:** backlog
+**Status:** in progress — SFTP complete, external NAT pending
 
 Provide full administration of the Minecraft server directory without granting
 an unrestricted shell or access to unrelated Mac files.
 
-Proposed design:
+Implemented:
 
-- Prefer Tailscale device sharing instead of exposing an administrative SSH port
-  through the home router.
 - Keep the existing owner/deployment SSH key unchanged.
-- Move the server, after a complete verified backup, to a chroot-compatible
-  layout such as `/private/var/minecraft-jail/server`.
-- Preserve `/Users/macbook/minecraft-server` as a compatibility symlink if the
-  migration is safe.
-- Create a separate key and account forced to `internal-sftp`.
-- Chroot that SFTP account so it sees the complete server as `/server` and
+- Moved the server after a verified full backup to
+  `/private/var/minecraft-jail/server`.
+- Preserved `/Users/macbook/minecraft-server` as a compatibility symlink.
+- Created the separate `minecraftadmin` key-only account forced to
+  `internal-sftp`.
+- Chrooted that SFTP account so it sees the complete server as `/server` and
   cannot traverse outside the jail.
+- Disabled shell, TTY, user RC, agent forwarding, TCP forwarding, X11
+  forwarding, tunnels, password authentication, and keyboard-interactive
+  authentication for the account.
+- Verified file creation, rename, deletion, path isolation, forced SFTP, owner
+  SSH access, server startup, world loading, and plugin restoration.
+
+Remaining:
+
+- Configure router NAT from external TCP `48222` to
+  `192.168.50.133:22`, or prefer Tailscale device sharing if it becomes
+  available.
+- Replace the bootstrap key with the second administrator's own public key
+  after they generate it locally.
 - Create a separate restricted control key/account with an allowlisted command
   wrapper for `status`, `start`, `stop`, `restart`, `logs`, and Minecraft console
   commands.
-- Do not expose a normal shell, direct tmux attachment, agent forwarding, port
-  forwarding, X11 forwarding, or password authentication.
-- Test SSH/SFTP isolation and rollback from an external network before granting
-  access to the second administrator.
+- Test the final public endpoint from an external network after the router rule
+  is active.
 
 ## Direct editor-to-server publishing
 
