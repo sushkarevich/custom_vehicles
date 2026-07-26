@@ -128,6 +128,7 @@ and forward-axis contract.
 | ID | Role | Parts |
 | --- | --- | ---: |
 | `car_default` | Original road car | 12 |
+| `paz_3205` | PAZ-3205 road bus | 56 |
 | `metro_717_head` | 81-717 head car | 54 |
 | `metro_714_wagon` | 81-714 passenger wagon | 44 |
 | `vityaz_m_front` | Vityaz-M front section | 51 |

@@ -1,4 +1,5 @@
 vehicles/car_default.yml
 vehicles/metro_714_wagon.yml
 vehicles/metro_717.yml
+vehicles/paz_3205.yml
 vehicles/vityaz_m.yml

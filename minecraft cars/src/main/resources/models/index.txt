@@ -1,6 +1,7 @@
 models/car_default.yml
 models/metro_714_wagon.yml
 models/metro_717_head.yml
+models/paz_3205.yml
 models/vityaz_m_front.yml
 models/vityaz_m_middle.yml
 models/vityaz_m_rear.yml

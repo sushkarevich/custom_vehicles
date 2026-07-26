@@ -1,0 +1,240 @@
+schema-version: 1
+id: paz_3205
+display-name: "ПАЗ-3205"
+coordinate-system:
+  forward: positive-z
+interaction:
+  offset:
+    x: 0.0
+    y: 0.18
+    z: 0.0
+  width: 2.55
+  height: 2.65
+display:
+  interpolation-duration: 2
+  teleport-duration: 1
+parts:
+  - id: chassis
+    material: POLISHED_BLACKSTONE
+    position: {x: 0.0, y: 0.42, z: 0.0}
+    scale: {x: 2.18, y: 0.24, z: 5.62}
+  - id: lower_body
+    material: SMOOTH_QUARTZ
+    position: {x: 0.0, y: 0.82, z: 0.0}
+    scale: {x: 2.30, y: 0.70, z: 5.72}
+  - id: upper_body
+    material: WHITE_CONCRETE
+    position: {x: 0.0, y: 1.70, z: -0.08}
+    scale: {x: 2.24, y: 1.18, z: 5.48}
+  - id: roof
+    material: SMOOTH_QUARTZ
+    position: {x: 0.0, y: 2.43, z: -0.10}
+    scale: {x: 2.32, y: 0.25, z: 5.48}
+  - id: front_brow
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 0.0, y: 2.18, z: 2.72}
+    scale: {x: 2.17, y: 0.22, z: 0.12}
+  - id: front_windshield_left
+    material: BLACK_STAINED_GLASS
+    position: {x: -0.55, y: 1.72, z: 2.77}
+    scale: {x: 0.99, y: 0.78, z: 0.09}
+  - id: front_windshield_right
+    material: BLACK_STAINED_GLASS
+    position: {x: 0.55, y: 1.72, z: 2.77}
+    scale: {x: 0.99, y: 0.78, z: 0.09}
+  - id: front_windshield_bar
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 0.0, y: 1.72, z: 2.83}
+    scale: {x: 0.10, y: 0.84, z: 0.08}
+  - id: front_destination_box
+    material: POLISHED_BLACKSTONE
+    position: {x: 0.0, y: 2.20, z: 2.82}
+    scale: {x: 1.45, y: 0.20, z: 0.08}
+  - id: rear_window
+    material: BLACK_STAINED_GLASS
+    position: {x: 0.0, y: 1.72, z: -2.80}
+    scale: {x: 1.82, y: 0.72, z: 0.09}
+  - id: rear_window_bar
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 0.0, y: 1.72, z: -2.86}
+    scale: {x: 0.09, y: 0.76, z: 0.08}
+  - id: window_left_driver
+    material: BLACK_STAINED_GLASS
+    position: {x: -1.13, y: 1.76, z: 2.08}
+    scale: {x: 0.08, y: 0.76, z: 0.78}
+  - id: window_left_front
+    material: BLACK_STAINED_GLASS
+    position: {x: -1.13, y: 1.76, z: 1.10}
+    scale: {x: 0.08, y: 0.76, z: 0.90}
+  - id: window_left_middle_front
+    material: BLACK_STAINED_GLASS
+    position: {x: -1.13, y: 1.76, z: 0.06}
+    scale: {x: 0.08, y: 0.76, z: 0.90}
+  - id: window_left_middle_rear
+    material: BLACK_STAINED_GLASS
+    position: {x: -1.13, y: 1.76, z: -0.98}
+    scale: {x: 0.08, y: 0.76, z: 0.90}
+  - id: window_left_rear
+    material: BLACK_STAINED_GLASS
+    position: {x: -1.13, y: 1.76, z: -2.02}
+    scale: {x: 0.08, y: 0.76, z: 0.90}
+  - id: door_front_upper
+    material: BLACK_STAINED_GLASS
+    position: {x: 1.14, y: 1.76, z: 1.82}
+    scale: {x: 0.08, y: 0.76, z: 0.60}
+  - id: door_rear_upper
+    material: BLACK_STAINED_GLASS
+    position: {x: 1.14, y: 1.76, z: 1.18}
+    scale: {x: 0.08, y: 0.76, z: 0.60}
+  - id: door_front_lower
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 1.16, y: 0.92, z: 1.82}
+    scale: {x: 0.08, y: 0.60, z: 0.60}
+  - id: door_rear_lower
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 1.16, y: 0.92, z: 1.18}
+    scale: {x: 0.08, y: 0.60, z: 0.60}
+  - id: door_center_bar
+    material: POLISHED_BLACKSTONE
+    position: {x: 1.19, y: 1.47, z: 1.50}
+    scale: {x: 0.07, y: 1.42, z: 0.07}
+  - id: window_right_front
+    material: BLACK_STAINED_GLASS
+    position: {x: 1.13, y: 1.76, z: 0.50}
+    scale: {x: 0.08, y: 0.76, z: 0.66}
+  - id: window_right_middle_front
+    material: BLACK_STAINED_GLASS
+    position: {x: 1.13, y: 1.76, z: -0.40}
+    scale: {x: 0.08, y: 0.76, z: 0.86}
+  - id: window_right_middle_rear
+    material: BLACK_STAINED_GLASS
+    position: {x: 1.13, y: 1.76, z: -1.40}
+    scale: {x: 0.08, y: 0.76, z: 0.86}
+  - id: window_right_rear
+    material: BLACK_STAINED_GLASS
+    position: {x: 1.13, y: 1.76, z: -2.28}
+    scale: {x: 0.08, y: 0.76, z: 0.66}
+  - id: belt_left
+    material: ORANGE_CONCRETE
+    position: {x: -1.18, y: 1.22, z: -0.05}
+    scale: {x: 0.06, y: 0.11, z: 5.10}
+  - id: belt_right
+    material: ORANGE_CONCRETE
+    position: {x: 1.18, y: 1.22, z: -0.05}
+    scale: {x: 0.06, y: 0.11, z: 5.10}
+  - id: belt_front
+    material: ORANGE_CONCRETE
+    position: {x: 0.0, y: 1.22, z: 2.90}
+    scale: {x: 1.72, y: 0.11, z: 0.07}
+  - id: front_grille
+    material: IRON_BLOCK
+    position: {x: 0.0, y: 0.91, z: 2.90}
+    scale: {x: 1.16, y: 0.28, z: 0.08}
+  - id: front_intake
+    material: POLISHED_BLACKSTONE
+    position: {x: 0.0, y: 0.64, z: 2.92}
+    scale: {x: 0.82, y: 0.10, z: 0.07}
+  - id: front_bumper
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 0.0, y: 0.43, z: 3.01}
+    scale: {x: 2.38, y: 0.22, z: 0.22}
+  - id: rear_bumper
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 0.0, y: 0.43, z: -3.01}
+    scale: {x: 2.38, y: 0.22, z: 0.22}
+  - id: headlight_left
+    material: SEA_LANTERN
+    position: {x: -0.73, y: 0.83, z: 2.96}
+    scale: {x: 0.36, y: 0.36, z: 0.10}
+  - id: headlight_right
+    material: SEA_LANTERN
+    position: {x: 0.73, y: 0.83, z: 2.96}
+    scale: {x: 0.36, y: 0.36, z: 0.10}
+  - id: indicator_left
+    material: ORANGE_STAINED_GLASS
+    position: {x: -0.99, y: 0.84, z: 2.96}
+    scale: {x: 0.15, y: 0.28, z: 0.10}
+  - id: indicator_right
+    material: ORANGE_STAINED_GLASS
+    position: {x: 0.99, y: 0.84, z: 2.96}
+    scale: {x: 0.15, y: 0.28, z: 0.10}
+  - id: tail_light_left_red
+    material: REDSTONE_BLOCK
+    position: {x: -0.77, y: 0.82, z: -2.96}
+    scale: {x: 0.24, y: 0.24, z: 0.10}
+  - id: tail_light_left_orange
+    material: ORANGE_STAINED_GLASS
+    position: {x: -0.47, y: 0.82, z: -2.96}
+    scale: {x: 0.20, y: 0.24, z: 0.10}
+  - id: tail_light_right_orange
+    material: ORANGE_STAINED_GLASS
+    position: {x: 0.47, y: 0.82, z: -2.96}
+    scale: {x: 0.20, y: 0.24, z: 0.10}
+  - id: tail_light_right_red
+    material: REDSTONE_BLOCK
+    position: {x: 0.77, y: 0.82, z: -2.96}
+    scale: {x: 0.24, y: 0.24, z: 0.10}
+  - id: wheel_left_front
+    material: BLACK_CONCRETE
+    position: {x: -1.19, y: 0.52, z: 1.78}
+    scale: {x: 0.26, y: 0.92, z: 0.92}
+  - id: wheel_right_front
+    material: BLACK_CONCRETE
+    position: {x: 1.19, y: 0.52, z: 1.78}
+    scale: {x: 0.26, y: 0.92, z: 0.92}
+  - id: wheel_left_rear
+    material: BLACK_CONCRETE
+    position: {x: -1.19, y: 0.52, z: -1.82}
+    scale: {x: 0.26, y: 0.98, z: 0.98}
+  - id: wheel_right_rear
+    material: BLACK_CONCRETE
+    position: {x: 1.19, y: 0.52, z: -1.82}
+    scale: {x: 0.26, y: 0.98, z: 0.98}
+  - id: hub_left_front
+    material: IRON_BLOCK
+    position: {x: -1.34, y: 0.52, z: 1.78}
+    scale: {x: 0.08, y: 0.38, z: 0.38}
+  - id: hub_right_front
+    material: IRON_BLOCK
+    position: {x: 1.34, y: 0.52, z: 1.78}
+    scale: {x: 0.08, y: 0.38, z: 0.38}
+  - id: hub_left_rear
+    material: IRON_BLOCK
+    position: {x: -1.34, y: 0.52, z: -1.82}
+    scale: {x: 0.08, y: 0.40, z: 0.40}
+  - id: hub_right_rear
+    material: IRON_BLOCK
+    position: {x: 1.34, y: 0.52, z: -1.82}
+    scale: {x: 0.08, y: 0.40, z: 0.40}
+  - id: mirror_left_arm
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: -1.30, y: 1.82, z: 2.36}
+    scale: {x: 0.30, y: 0.06, z: 0.06}
+  - id: mirror_right_arm
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 1.30, y: 1.82, z: 2.36}
+    scale: {x: 0.30, y: 0.06, z: 0.06}
+  - id: mirror_left
+    material: POLISHED_BLACKSTONE
+    position: {x: -1.47, y: 1.82, z: 2.36}
+    scale: {x: 0.12, y: 0.32, z: 0.22}
+  - id: mirror_right
+    material: POLISHED_BLACKSTONE
+    position: {x: 1.47, y: 1.82, z: 2.36}
+    scale: {x: 0.12, y: 0.32, z: 0.22}
+  - id: roof_vent_front
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 0.0, y: 2.60, z: 1.18}
+    scale: {x: 0.72, y: 0.12, z: 0.82}
+  - id: roof_vent_rear
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 0.0, y: 2.60, z: -1.38}
+    scale: {x: 0.72, y: 0.12, z: 0.82}
+  - id: front_plate
+    material: WHITE_CONCRETE
+    position: {x: 0.0, y: 0.55, z: 3.14}
+    scale: {x: 0.52, y: 0.18, z: 0.05}
+  - id: rear_engine_hatch
+    material: LIGHT_GRAY_CONCRETE
+    position: {x: 0.0, y: 1.09, z: -2.96}
+    scale: {x: 1.18, y: 0.40, z: 0.08}

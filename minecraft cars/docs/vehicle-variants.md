@@ -95,6 +95,7 @@ after model references and behavior-specific roles validate.
 | Variant ID | Behavior |
 | --- | --- |
 | `car_default` | car |
+| `paz_3205` | car |
 | `metro_717` | train |
 | `metro_714_wagon` | wagon |
 | `vityaz_m` | tram |

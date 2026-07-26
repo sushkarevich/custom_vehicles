@@ -1,0 +1,17 @@
+schema-version: 1
+id: paz_3205
+display-name: "Автобус ПАЗ-3205"
+behavior: car
+model: paz_3205
+item:
+  material: CHEST_MINECART
+  name: "ПАЗ-3205"
+  lore:
+    - "ПКМ по блоку — установить"
+    - "WASD — управление автобусом"
+    - "Пробел — гудок"
+    - "Shift + ПКМ — меню транспорта"
+  custom-model-data: 3205
+menu-description:
+  - "Классический советский автобус"
+  - "Белый кузов с оранжевой полосой"

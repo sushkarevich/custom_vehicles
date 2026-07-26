@@ -31,6 +31,7 @@ class BuiltInDefinitionsTest {
                         "car_default", 12,
                         "metro_717_head", 54,
                         "metro_714_wagon", 44,
+                        "paz_3205", 56,
                         "vityaz_m_front", 51,
                         "vityaz_m_middle", 45,
                         "vityaz_m_rear", 51
@@ -48,6 +49,13 @@ class BuiltInDefinitionsTest {
         assertEquals(Material.SEA_LANTERN, carHeadlight.material());
         assertEquals(new ModelVector(-0.53, 0.64, -1.63), carHeadlight.position());
         assertEquals(new ModelVector(0.34, 0.26, 0.08), carHeadlight.scale());
+
+        ModelDefinition bus = registry.require("paz_3205");
+        assertEquals(ModelDefinition.ForwardDirection.POSITIVE_Z, bus.forwardDirection());
+        assertEquals(2.55F, bus.interaction().orElseThrow().width());
+        ModelPartDefinition busDoor = parts(bus).get("door_front_upper");
+        assertEquals(Material.BLACK_STAINED_GLASS, busDoor.material());
+        assertEquals(new ModelVector(1.14, 1.76, 1.82), busDoor.position());
 
         ModelDefinition head = registry.require("metro_717_head");
         ModelPartDefinition cabGlass = parts(head).get("cab_windscreen_center");
@@ -67,7 +75,7 @@ class BuiltInDefinitionsTest {
     }
 
     @Test
-    void builtInVariantsReferenceAllSixMigratedModels() throws Exception {
+    void builtInVariantsReferenceAllPackagedModels() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
         ModelRegistry models = ModelRegistry.load(
                 DefinitionResources.bundledModels(classLoader),
@@ -82,10 +90,11 @@ class BuiltInDefinitionsTest {
         );
 
         assertEquals(
-                List.of("car_default", "metro_714_wagon", "metro_717", "vityaz_m"),
+                List.of("car_default", "metro_714_wagon", "metro_717", "paz_3205", "vityaz_m"),
                 variants.all().stream().map(VehicleVariantDefinition::id).toList()
         );
         assertEquals("car_default", variants.require("car_default").model("model"));
+        assertEquals("paz_3205", variants.require("paz_3205").model("model"));
         assertEquals("metro_717_head", variants.require("metro_717").model("locomotive"));
         assertEquals("metro_714_wagon", variants.require("metro_717").model("wagon"));
         assertEquals("vityaz_m_front", variants.require("vityaz_m").model("front"));

@@ -19,15 +19,15 @@ class DefinitionResourcesTest {
     @Test
     void bundledIndexesLoadAndDefaultsAreCopiedOnlyOnce() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
-        assertEquals(6, DefinitionResources.bundledModels(classLoader).size());
-        assertEquals(4, DefinitionResources.bundledVariants(classLoader).size());
+        assertEquals(7, DefinitionResources.bundledModels(classLoader).size());
+        assertEquals(5, DefinitionResources.bundledVariants(classLoader).size());
 
         DefinitionResources.CopyResult first = DefinitionResources.copyDefaultsOnce(
                 classLoader,
                 temporaryDirectory
         );
         assertTrue(first.attempted());
-        assertEquals(10, first.copiedFiles().size());
+        assertEquals(12, first.copiedFiles().size());
         Path car = temporaryDirectory.resolve("models/car_default.yml");
         assertTrue(Files.exists(car));
         assertTrue(Files.exists(temporaryDirectory.resolve(DefinitionResources.COPY_MARKER)));
