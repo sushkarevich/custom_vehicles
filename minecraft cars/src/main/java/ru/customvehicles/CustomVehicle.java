@@ -1,6 +1,8 @@
 package ru.customvehicles;
 
 import io.papermc.paper.entity.TeleportFlag;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -196,7 +198,30 @@ final class CustomVehicle implements ManagedVehicle {
             playCollision(settings, Math.abs(speed));
             speed = 0.0;
         }
+        updateTransmission(input, settings);
         updateSounds(input, settings);
+        updateSpeedometer(input, settings);
+    }
+
+    private void updateTransmission(VehicleInput input, VehicleSettings settings) {
+        int targetGear = VehicleMath.forwardGear(speed, settings.maxSpeed());
+        if (targetGear == 0) {
+            currentGear = 1;
+            return;
+        }
+        if (targetGear == currentGear) {
+            return;
+        }
+        boolean upshift = targetGear > currentGear;
+        currentGear = targetGear;
+        if (upshift
+                && input.forward() > 0.1
+                && gearShiftCooldown == 0
+                && driver() != null
+                && settings.soundVolume() > 0.0) {
+            playGearShift(settings, targetGear);
+            gearShiftCooldown = 8;
+        }
     }
 
     private void updateSounds(VehicleInput input, VehicleSettings settings) {
@@ -220,17 +245,6 @@ final class CustomVehicle implements ManagedVehicle {
         if (driver() == null || settings.soundVolume() <= 0.0) {
             return;
         }
-        int targetGear = VehicleMath.forwardGear(speed, settings.maxSpeed());
-        if (targetGear == 0) {
-            currentGear = 1;
-        } else if (targetGear != currentGear) {
-            boolean upshift = targetGear > currentGear;
-            currentGear = targetGear;
-            if (upshift && input.forward() > 0.1 && gearShiftCooldown == 0) {
-                playGearShift(settings, targetGear);
-                gearShiftCooldown = 8;
-            }
-        }
         float volume = soundVolume(settings.soundVolume());
         if (Math.abs(speed) > 0.015) {
             if (soundTicks % 6 == 0) {
@@ -251,6 +265,41 @@ final class CustomVehicle implements ManagedVehicle {
                     0.65F
             );
         }
+    }
+
+    private void updateSpeedometer(VehicleInput input, VehicleSettings settings) {
+        Player player = driver();
+        if (player == null || !settings.speedometerEnabled() || soundTicks % 4 != 0) {
+            return;
+        }
+        int kmh = VehicleMath.speedKmh(speed);
+        String transmission = speed < -0.01
+                ? "R"
+                : Math.abs(speed) < 0.01 ? "N" : "D" + currentGear;
+        String motion;
+        NamedTextColor motionColor;
+        if (Math.abs(speed) < 0.01) {
+            motion = "СТОП";
+            motionColor = NamedTextColor.GRAY;
+        } else if (input.forward() < -0.1 && speed > 0.0
+                || input.forward() > 0.1 && speed < 0.0) {
+            motion = "ТОРМОЗ";
+            motionColor = NamedTextColor.RED;
+        } else if (Math.abs(input.forward()) < 0.1) {
+            motion = "НАКАТ";
+            motionColor = NamedTextColor.YELLOW;
+        } else {
+            motion = "ГАЗ";
+            motionColor = NamedTextColor.GREEN;
+        }
+        player.sendActionBar(
+                Component.text("Скорость: ", NamedTextColor.GRAY)
+                        .append(Component.text(kmh + " км/ч", NamedTextColor.AQUA))
+                        .append(Component.text("  |  ", NamedTextColor.DARK_GRAY))
+                        .append(Component.text(transmission, NamedTextColor.GOLD))
+                        .append(Component.text("  |  ", NamedTextColor.DARK_GRAY))
+                        .append(Component.text(motion, motionColor))
+        );
     }
 
     private void playGearShift(VehicleSettings settings, int gear) {

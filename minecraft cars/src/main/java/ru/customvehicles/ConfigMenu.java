@@ -29,6 +29,8 @@ final class ConfigMenu implements Listener {
     private static final int RESET = 36;
     private static final int SAVE = 40;
     private static final int CLOSE = 44;
+    private static final int CAR_SPEEDOMETER = 30;
+    private static final int TRAIN_SPEEDOMETER = 28;
 
     private static final Map<Integer, Setting> CAR_SETTINGS = settings(
             new SlotSetting(10, setting(
@@ -181,6 +183,12 @@ final class ConfigMenu implements Listener {
             player.closeInventory();
             return;
         }
+        if (slot == speedometerSlot(holder)) {
+            setSpeedometerEnabled(holder, !speedometerEnabled(holder));
+            render(holder);
+            click(player);
+            return;
+        }
 
         Setting setting = selectedSettings(holder).get(slot);
         if (setting == null || (!event.isLeftClick() && !event.isRightClick())) {
@@ -214,12 +222,22 @@ final class ConfigMenu implements Listener {
             holder.values.put(
                     setting.path(),
                     plugin.getConfig().getDouble(setting.path(), setting.defaultValue())
-            );
+                );
         }
+        holder.carSpeedometer = plugin.getConfig().getBoolean(
+                "vehicle.speedometer-enabled",
+                true
+        );
+        holder.trainSpeedometer = plugin.getConfig().getBoolean(
+                "train.speedometer-enabled",
+                true
+        );
     }
 
     private void save(MenuHolder holder) {
         holder.values.forEach((path, value) -> plugin.getConfig().set(path, value));
+        plugin.getConfig().set("vehicle.speedometer-enabled", holder.carSpeedometer);
+        plugin.getConfig().set("train.speedometer-enabled", holder.trainSpeedometer);
         plugin.saveConfig();
         plugin.vehicleManager().reloadSettings();
     }
@@ -228,6 +246,7 @@ final class ConfigMenu implements Listener {
         selectedSettings(holder).values().forEach(setting ->
                 holder.values.put(setting.path(), setting.defaultValue())
         );
+        setSpeedometerEnabled(holder, true);
     }
 
     private void render(MenuHolder holder) {
@@ -270,6 +289,19 @@ final class ConfigMenu implements Listener {
             double value = holder.values.getOrDefault(setting.path(), setting.defaultValue());
             inventory.setItem(entry.getKey(), settingItem(setting, value));
         }
+        boolean speedometerEnabled = speedometerEnabled(holder);
+        inventory.setItem(speedometerSlot(holder), item(
+                Material.CLOCK,
+                "Спидометр: " + (speedometerEnabled ? "включён" : "выключен"),
+                speedometerEnabled ? NamedTextColor.GREEN : NamedTextColor.RED,
+                List.of(
+                        Component.text(
+                                "Скорость и режим движения над хотбаром",
+                                NamedTextColor.GRAY
+                        ),
+                        Component.text("Нажмите для переключения", NamedTextColor.YELLOW)
+                )
+        ));
 
         inventory.setItem(RESET, item(
                 Material.REDSTONE,
@@ -343,6 +375,24 @@ final class ConfigMenu implements Listener {
 
     private Map<Integer, Setting> selectedSettings(MenuHolder holder) {
         return holder.kind == VehicleKind.CAR ? CAR_SETTINGS : TRAIN_SETTINGS;
+    }
+
+    private int speedometerSlot(MenuHolder holder) {
+        return holder.kind == VehicleKind.CAR ? CAR_SPEEDOMETER : TRAIN_SPEEDOMETER;
+    }
+
+    private boolean speedometerEnabled(MenuHolder holder) {
+        return holder.kind == VehicleKind.CAR
+                ? holder.carSpeedometer
+                : holder.trainSpeedometer;
+    }
+
+    private void setSpeedometerEnabled(MenuHolder holder, boolean enabled) {
+        if (holder.kind == VehicleKind.CAR) {
+            holder.carSpeedometer = enabled;
+        } else {
+            holder.trainSpeedometer = enabled;
+        }
     }
 
     private Map<String, Setting> allSettings() {
@@ -423,6 +473,8 @@ final class ConfigMenu implements Listener {
     private static final class MenuHolder implements InventoryHolder {
         private final Map<String, Double> values = new HashMap<>();
         private VehicleKind kind = VehicleKind.CAR;
+        private boolean carSpeedometer = true;
+        private boolean trainSpeedometer = true;
         private Inventory inventory;
 
         @Override

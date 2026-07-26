@@ -66,6 +66,10 @@ public final class VehicleMath {
         return (float) (0.62 + progress * 0.68);
     }
 
+    public static int speedKmh(double blocksPerTick) {
+        return (int) Math.round(Math.abs(blocksPerTick) * 72.0);
+    }
+
     public static double directionX(float yawDegrees) {
         return -Math.sin(Math.toRadians(yawDegrees));
     }

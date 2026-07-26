@@ -7,6 +7,7 @@ vehicle:
   steering-degrees-per-tick: 2.8
   step-height: 1.0
   sound-volume: 1.0
+  speedometer-enabled: true
   seat-offset:
     x: 0.0
     y: 0.0
@@ -21,6 +22,7 @@ train:
   wagon-spacing: 6.20
   max-wagons: 6
   sound-volume: 1.0
+  speedometer-enabled: true
   seat-offset:
     x: 0.0
     y: 0.0

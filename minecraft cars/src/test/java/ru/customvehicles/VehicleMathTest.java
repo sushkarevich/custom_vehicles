@@ -48,6 +48,13 @@ class VehicleMathTest {
     }
 
     @Test
+    void convertsBlocksPerTickToKilometresPerHour() {
+        assertEquals(0, VehicleMath.speedKmh(0.0));
+        assertEquals(36, VehicleMath.speedKmh(0.5));
+        assertEquals(50, VehicleMath.speedKmh(-0.7));
+    }
+
+    @Test
     void rotatesOffsetsAroundVehicleCenter() {
         assertEquals(0.0, VehicleMath.rotateX(1.0, 0.0, 90.0F), 0.000001);
         assertEquals(1.0, VehicleMath.rotateZ(1.0, 0.0, 90.0F), 0.000001);

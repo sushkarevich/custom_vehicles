@@ -11,6 +11,7 @@ record TrainSettings(
         double wagonSpacing,
         int maxWagons,
         double soundVolume,
+        boolean speedometerEnabled,
         SeatOffset seatOffset
 ) {
     static TrainSettings from(ConfigurationSection section) {
@@ -26,6 +27,7 @@ record TrainSettings(
                 positive(section.getDouble("wagon-spacing", 6.20), 6.20),
                 positive(section.getInt("max-wagons", 6), 6),
                 nonNegative(section.getDouble("sound-volume", 1.0), 1.0),
+                section.getBoolean("speedometer-enabled", true),
                 SeatOffset.from(section.getConfigurationSection("seat-offset"))
         );
     }
@@ -40,6 +42,7 @@ record TrainSettings(
                 6.20,
                 6,
                 1.0,
+                true,
                 SeatOffset.CENTERED
         );
     }

@@ -2,6 +2,7 @@ package ru.customvehicles;
 
 import io.papermc.paper.entity.TeleportFlag;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -361,6 +362,7 @@ final class RailTrain implements ManagedVehicle {
             hornCooldown = 30;
         }
         hornHeld = input.horn();
+        updateSpeedometer(input, settings);
 
         if (settings.soundVolume() <= 0.0) {
             return;
@@ -394,6 +396,53 @@ final class RailTrain implements ManagedVehicle {
                     0.7F
             );
         }
+    }
+
+    private void updateSpeedometer(VehicleInput input, TrainSettings settings) {
+        Player player = driver();
+        if (player == null || !settings.speedometerEnabled() || soundTicks % 4 != 0) {
+            return;
+        }
+        AutopilotInfo autopilot = plugin.autopilotManager().info(id);
+        Component display = Component.text("Скорость: ", NamedTextColor.GRAY)
+                .append(Component.text(
+                        VehicleMath.speedKmh(speed) + " км/ч",
+                        NamedTextColor.AQUA
+                ))
+                .append(Component.text("  |  ", NamedTextColor.DARK_GRAY));
+        if (autopilot.active()) {
+            display = display.append(Component.text("АВТО", NamedTextColor.GREEN));
+            if (autopilot.nextStopName() != null) {
+                display = display
+                        .append(Component.text("  |  → ", NamedTextColor.DARK_GRAY))
+                        .append(Component.text(
+                                autopilot.nextStopName().replace('_', ' '),
+                                NamedTextColor.YELLOW
+                        ));
+            }
+        } else {
+            String motion;
+            NamedTextColor motionColor;
+            if (Math.abs(speed) < 0.01) {
+                motion = "СТОП";
+                motionColor = NamedTextColor.GRAY;
+            } else if ((input.forward() < -0.1 && speed > 0.0)
+                    || (input.forward() > 0.1 && speed < 0.0)) {
+                motion = "ТОРМОЗ";
+                motionColor = NamedTextColor.RED;
+            } else if (Math.abs(input.forward()) < 0.1) {
+                motion = "НАКАТ";
+                motionColor = NamedTextColor.YELLOW;
+            } else {
+                motion = "ТЯГА";
+                motionColor = NamedTextColor.GREEN;
+            }
+            display = display
+                    .append(Component.text("РУЧНОЙ", NamedTextColor.GOLD))
+                    .append(Component.text("  |  ", NamedTextColor.DARK_GRAY))
+                    .append(Component.text(motion, motionColor));
+        }
+        player.sendActionBar(display);
     }
 
     private void playRailClack(float volume) {

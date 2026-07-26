@@ -11,6 +11,7 @@ public record VehicleSettings(
         double steeringDegreesPerTick,
         double stepHeight,
         double soundVolume,
+        boolean speedometerEnabled,
         SeatOffset seatOffset
 ) {
     public static VehicleSettings from(ConfigurationSection section) {
@@ -26,6 +27,7 @@ public record VehicleSettings(
                 positive(section.getDouble("steering-degrees-per-tick", 2.8), 2.8),
                 positive(section.getDouble("step-height", 1.0), 1.0),
                 nonNegative(section.getDouble("sound-volume", 1.0), 1.0),
+                section.getBoolean("speedometer-enabled", true),
                 SeatOffset.from(section.getConfigurationSection("seat-offset"))
         );
     }
@@ -40,6 +42,7 @@ public record VehicleSettings(
                 2.8,
                 1.0,
                 1.0,
+                true,
                 SeatOffset.CENTERED
         );
     }

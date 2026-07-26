@@ -234,6 +234,7 @@ public final class CustomVehiclesPlugin extends JavaPlugin {
     void endDriving(Player player) {
         customDrivers.remove(player.getUniqueId());
         clearInput(player);
+        player.sendActionBar(Component.empty());
     }
 
     boolean isCustomDriver(Player player) {
