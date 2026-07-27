@@ -11,8 +11,10 @@ import {
 import { isModelDefinition, type ValidationIssue } from '../../shared/schema'
 import { validateModel, validateVariant } from '../../shared/validation'
 import { useDocumentStore } from '../store/document-store'
+import { useResourcePreviewStore } from '../store/resource-preview-store'
 import { ModelInspector } from './components/ModelInspector'
 import { PartList } from './components/PartList'
+import { ResourcePackManager } from './components/ResourcePackManager'
 import { StatusBar } from './components/StatusBar'
 import { Toolbar } from './components/Toolbar'
 import { VariantInspector } from './components/VariantInspector'
@@ -81,11 +83,25 @@ function EditorApp(): React.JSX.Element {
   const kind = useDocumentStore((state) => state.kind)
   const filePath = useDocumentStore((state) => state.filePath)
   const dirty = useDocumentStore((state) => state.dirty)
-  const selectedPartId = useDocumentStore((state) => state.selectedPartId)
+  const selectedPartIds = useDocumentStore((state) => state.selectedPartIds)
+  const activePartId = useDocumentStore((state) => state.activePartId)
+  const editorNotice = useDocumentStore((state) => state.editorNotice)
   const documentEpoch = useDocumentStore((state) => state.documentEpoch)
   const canUndo = useDocumentStore((state) => state.history.past.length > 0)
   const canRedo = useDocumentStore((state) => state.history.future.length > 0)
+  const resourceRevision = useResourcePreviewStore(
+    (state) => state.preview.revision
+  )
+  const resourceMode = useResourcePreviewStore((state) => state.preview.mode)
+  const initializeResourcePreview = useResourcePreviewStore(
+    (state) => state.initialize
+  )
+  const resolveMaterialPreviews = useResourcePreviewStore(
+    (state) => state.resolveMaterials
+  )
+  const setResourceMode = useResourcePreviewStore((state) => state.setMode)
   const [loadIssues, setLoadIssues] = useState<ValidationIssue[]>([])
+  const [resourceManagerOpen, setResourceManagerOpen] = useState(false)
   const workflow = useFileWorkflows(setLoadIssues)
   const [settings, setSettingsState] = useState<ViewportSettings>(INITIAL_VIEWPORT_SETTINGS)
   const [cameraCommand, setCameraCommand] = useState<CameraCommand>({
@@ -94,6 +110,30 @@ function EditorApp(): React.JSX.Element {
   })
   const previousDocumentEpoch = useRef(documentEpoch)
   const executeHistoryCommand = useHistoryIntegration(canUndo, canRedo)
+
+  useEffect(() => {
+    void initializeResourcePreview()
+  }, [initializeResourcePreview])
+
+  const materialKey = useMemo(
+    () =>
+      isModelDefinition(document)
+        ? [...new Set(document.parts.map((part) => part.material))]
+            .sort()
+            .join('\u0000')
+        : '',
+    [document]
+  )
+
+  useEffect(() => {
+    if (resourceMode !== 'textures' || materialKey.length === 0) return
+    void resolveMaterialPreviews(materialKey.split('\u0000'))
+  }, [
+    materialKey,
+    resolveMaterialPreviews,
+    resourceMode,
+    resourceRevision
+  ])
 
   useEffect(() => {
     window.editorApi.setDirty(dirty)
@@ -121,11 +161,17 @@ function EditorApp(): React.JSX.Element {
 
   const shortcutOptions = useMemo(
     () => ({
+      enabled: !resourceManagerOpen,
       setTransformMode,
       save: workflow.save,
       saveAs: workflow.saveAs
     }),
-    [setTransformMode, workflow.save, workflow.saveAs]
+    [
+      resourceManagerOpen,
+      setTransformMode,
+      workflow.save,
+      workflow.saveAs
+    ]
   )
   useKeyboardShortcuts(shortcutOptions)
 
@@ -161,19 +207,31 @@ function EditorApp(): React.JSX.Element {
         onSaveAs={() => void workflow.saveAs()}
         onExport={() => void workflow.exportDocument()}
         onHistoryCommand={executeHistoryCommand}
+        resourceMode={resourceMode}
+        onResourceMode={(mode) => void setResourceMode(mode)}
+        onOpenResources={() => setResourceManagerOpen(true)}
       />
       <div className={`workspace ${kind === 'variant' ? 'variant-mode' : ''}`}>
         {model !== null ? (
           <>
-            <PartList model={model} selectedPartId={selectedPartId} />
+            <PartList
+              model={model}
+              selectedPartIds={selectedPartIds}
+              activePartId={activePartId}
+            />
             <Viewport
               model={model}
-              selectedPartId={selectedPartId}
+              selectedPartIds={selectedPartIds}
+              activePartId={activePartId}
               settings={settings}
               command={cameraCommand}
               onCommand={sendCameraCommand}
             />
-            <ModelInspector model={model} selectedPartId={selectedPartId} />
+            <ModelInspector
+              model={model}
+              selectedPartIds={selectedPartIds}
+              activePartId={activePartId}
+            />
           </>
         ) : variant !== null ? (
           <>
@@ -185,11 +243,15 @@ function EditorApp(): React.JSX.Element {
       </div>
       <StatusBar
         issues={currentIssues}
-        status={workflow.status}
+        status={editorNotice === null ? workflow.status : { kind: 'info', text: editorNotice }}
         filePath={filePath}
-        selectedPartId={selectedPartId}
+        selectedPartIds={selectedPartIds}
+        activePartId={activePartId}
         partCount={model?.parts.length ?? null}
       />
+      {resourceManagerOpen && (
+        <ResourcePackManager onClose={() => setResourceManagerOpen(false)} />
+      )}
     </div>
   )
 }

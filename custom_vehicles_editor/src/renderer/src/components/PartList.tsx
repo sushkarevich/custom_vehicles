@@ -1,46 +1,28 @@
-import type { ModelDefinition } from '../../../shared/schema'
+import { isModelDefinition, type ModelDefinition } from '../../../shared/schema'
 import { useDocumentStore } from '../../store/document-store'
-import {
-  addPart,
-  deletePart,
-  duplicatePart,
-  mirrorPart,
-  reorderPart,
-  setPartMetadata
-} from '../../store/operations'
+import { addPart } from '../../store/operations'
+import { selectionFromIds } from '../../store/selection'
 import { materialColor } from '../materialColor'
 
 export function PartList({
   model,
-  selectedPartId
+  selectedPartIds,
+  activePartId
 }: {
   model: ModelDefinition
-  selectedPartId: string | null
+  selectedPartIds: string[]
+  activePartId: string | null
 }): React.JSX.Element {
-  const update = useDocumentStore((state) => state.update)
+  const applyEdit = useDocumentStore((state) => state.applyEdit)
+  const executeModelCommand = useDocumentStore((state) => state.executeModelCommand)
   const selectPart = useDocumentStore((state) => state.selectPart)
   const hidden = new Set(model.editor?.['hidden-parts'] ?? [])
   const locked = new Set(model.editor?.['locked-parts'] ?? [])
+  const selected = new Set(selectedPartIds)
+  const editablePartIds = selectedPartIds.filter((id) => !locked.has(id))
 
-  const duplicateSelected = (): void => {
-    if (selectedPartId === null) return
-    const result = duplicatePart(model, selectedPartId)
-    update(() => result.model)
-    selectPart(result.partId)
-  }
-
-  const deleteSelected = (): void => {
-    if (selectedPartId === null) return
-    const result = deletePart(model, selectedPartId)
-    update(() => result.model)
-    selectPart(result.selectedPartId)
-  }
-
-  const mirrorSelected = (axis: 'x' | 'z'): void => {
-    if (selectedPartId === null) return
-    const result = mirrorPart(model, selectedPartId, axis)
-    update(() => result.model)
-    selectPart(result.partId)
+  const targetRow = (partId: string, isSelected: boolean): void => {
+    if (!isSelected) selectPart(partId)
   }
 
   return (
@@ -52,17 +34,35 @@ export function PartList({
         </div>
         <span className="count-badge">{model.parts.length}</span>
       </div>
-      <div className="part-list" role="listbox" aria-label="Детали модели">
+      <div
+        className="part-list"
+        role="listbox"
+        aria-label="Детали модели"
+        aria-multiselectable="true"
+      >
         {model.parts.map((part, index) => {
           const isHidden = hidden.has(part.id)
           const isLocked = locked.has(part.id)
+          const isSelected = selected.has(part.id)
+          const isActive = activePartId === part.id
+          const lockTargets = isSelected ? selectedPartIds : [part.id]
+          const shouldLockTargets = !lockTargets.every((id) => locked.has(id))
+          const lockActionLabel =
+            lockTargets.length > 1
+              ? shouldLockTargets
+                ? 'Заблокировать выбранные детали'
+                : 'Разблокировать выбранные детали'
+              : shouldLockTargets
+                ? 'Заблокировать деталь'
+                : 'Разблокировать деталь'
           return (
             <div
-              className={`part-row ${selectedPartId === part.id ? 'is-selected' : ''} ${isHidden ? 'is-hidden' : ''}`}
+              className={`part-row ${isSelected ? 'is-selected' : ''} ${isActive ? 'is-active-selection' : ''} ${isHidden ? 'is-hidden' : ''}`}
               role="option"
-              aria-selected={selectedPartId === part.id}
+              aria-selected={isSelected}
+              aria-current={isActive ? 'true' : undefined}
               key={part.id}
-              onClick={() => selectPart(part.id)}
+              onClick={(event) => selectPart(part.id, event.shiftKey)}
               onDoubleClick={() => document.querySelector<HTMLInputElement>('#part-id-input')?.focus()}
             >
               <span
@@ -82,7 +82,14 @@ export function PartList({
                   aria-label={isHidden ? 'Показать деталь' : 'Скрыть деталь'}
                   onClick={(event) => {
                     event.stopPropagation()
-                    update(() => setPartMetadata(model, part.id, 'hidden-parts', !isHidden))
+                    targetRow(part.id, isSelected)
+                    const targets = isSelected ? editablePartIds : [part.id]
+                    const allHidden = targets.every((id) => hidden.has(id))
+                    executeModelCommand({
+                      type: 'set-metadata',
+                      key: 'hidden-parts',
+                      enabled: !allHidden
+                    })
                   }}
                 >
                   {isHidden ? '○' : '●'}
@@ -90,11 +97,16 @@ export function PartList({
                 <button
                   type="button"
                   className={isLocked ? 'is-active' : ''}
-                  title={isLocked ? 'Разблокировать деталь' : 'Заблокировать деталь'}
-                  aria-label={isLocked ? 'Разблокировать деталь' : 'Заблокировать деталь'}
+                  title={lockActionLabel}
+                  aria-label={lockActionLabel}
                   onClick={(event) => {
                     event.stopPropagation()
-                    update(() => setPartMetadata(model, part.id, 'locked-parts', !isLocked))
+                    targetRow(part.id, isSelected)
+                    executeModelCommand({
+                      type: 'set-metadata',
+                      key: 'locked-parts',
+                      enabled: shouldLockTargets
+                    })
                   }}
                 >
                   {isLocked ? '◆' : '◇'}
@@ -106,7 +118,8 @@ export function PartList({
                   disabled={index === 0}
                   onClick={(event) => {
                     event.stopPropagation()
-                    update(() => reorderPart(model, part.id, -1))
+                    targetRow(part.id, isSelected)
+                    executeModelCommand({ type: 'reorder', direction: -1 })
                   }}
                 >
                   ↑
@@ -118,7 +131,8 @@ export function PartList({
                   disabled={index === model.parts.length - 1}
                   onClick={(event) => {
                     event.stopPropagation()
-                    update(() => reorderPart(model, part.id, 1))
+                    targetRow(part.id, isSelected)
+                    executeModelCommand({ type: 'reorder', direction: 1 })
                   }}
                 >
                   ↓
@@ -133,29 +147,49 @@ export function PartList({
           type="button"
           className="primary-button"
           onClick={() => {
-            const result = addPart(model, selectedPartId ?? undefined)
-            update(() => result.model)
-            selectPart(result.partId)
+            applyEdit((document, selection) => {
+              if (!isModelDefinition(document)) return { document, selection }
+              const result = addPart(document, selection.activePartId ?? undefined)
+              return {
+                document: result.model,
+                selection: selectionFromIds([result.partId], result.partId)
+              }
+            })
           }}
         >
           + Деталь
         </button>
-        <button type="button" disabled={selectedPartId === null} onClick={duplicateSelected}>
+        <button
+          type="button"
+          disabled={editablePartIds.length === 0}
+          onClick={() => executeModelCommand({ type: 'duplicate' })}
+        >
           Дубликат
         </button>
         <button
           type="button"
           className="danger-button"
-          disabled={selectedPartId === null || model.parts.length <= 1}
-          onClick={deleteSelected}
+          disabled={
+            editablePartIds.length === 0 ||
+            editablePartIds.length >= model.parts.length
+          }
+          onClick={() => executeModelCommand({ type: 'delete' })}
         >
           Удалить
         </button>
         <div className="mirror-actions">
-          <button type="button" disabled={selectedPartId === null} onClick={() => mirrorSelected('x')}>
+          <button
+            type="button"
+            disabled={editablePartIds.length === 0}
+            onClick={() => executeModelCommand({ type: 'mirror', axis: 'x' })}
+          >
             Зеркало X
           </button>
-          <button type="button" disabled={selectedPartId === null} onClick={() => mirrorSelected('z')}>
+          <button
+            type="button"
+            disabled={editablePartIds.length === 0}
+            onClick={() => executeModelCommand({ type: 'mirror', axis: 'z' })}
+          >
             Зеркало Z
           </button>
         </div>

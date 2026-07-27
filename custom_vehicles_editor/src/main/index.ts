@@ -4,11 +4,9 @@ import { isEditorHistoryState } from '../shared/history-commands'
 import { IPC_CHANNELS } from '../shared/ipc'
 import { installApplicationMenu } from './application-menu'
 import { registerIpcHandlers } from './ipc'
+import { resolveLiveEditorWindow } from './editor-window'
 
-let rendererDirty = false
-let closeConfirmed = false
-let closeDialogOpen = false
-let unregisterIpc: (() => void) | null = null
+let editorWindow: BrowserWindow | null = null
 
 app.enableSandbox()
 
@@ -30,25 +28,45 @@ function createWindow(): void {
       allowRunningInsecureContent: false
     }
   })
+  const contents = window.webContents
+  editorWindow = window
+  let rendererDirty = false
+  let closeConfirmed = false
+  let closeDialogOpen = false
+  const resolveWindow = (): BrowserWindow | null =>
+    resolveLiveEditorWindow(() => editorWindow)
 
-  unregisterIpc = registerIpcHandlers(window)
-  const applicationMenu = installApplicationMenu(window)
+  const unregisterIpc = registerIpcHandlers(resolveWindow)
+  const applicationMenu = installApplicationMenu(resolveWindow)
 
   const handleDirty = (event: Electron.IpcMainEvent, value: unknown): void => {
-    if (event.sender === window.webContents && typeof value === 'boolean') {
+    const liveWindow = resolveWindow()
+    if (
+      liveWindow === window &&
+      event.sender === contents &&
+      typeof value === 'boolean'
+    ) {
       rendererDirty = value
-      window.setDocumentEdited(value)
+      liveWindow.setDocumentEdited(value)
     }
   }
   const handleHistoryState = (event: Electron.IpcMainEvent, value: unknown): void => {
-    if (event.sender === window.webContents && isEditorHistoryState(value)) {
+    const liveWindow = resolveWindow()
+    if (
+      liveWindow === window &&
+      event.sender === contents &&
+      isEditorHistoryState(value)
+    ) {
       applicationMenu.updateHistoryState(value)
     }
   }
   ipcMain.on(IPC_CHANNELS.setDirty, handleDirty)
   ipcMain.on(IPC_CHANNELS.historyState, handleHistoryState)
 
-  window.on('ready-to-show', () => window.show())
+  window.on('ready-to-show', () => {
+    const liveWindow = resolveWindow()
+    if (liveWindow === window) liveWindow.show()
+  })
   window.on('close', (event) => {
     if (!rendererDirty || closeConfirmed) return
     event.preventDefault()
@@ -66,9 +84,10 @@ function createWindow(): void {
         noLink: true
       })
       .then((result) => {
-        if (result.response === 1) {
+        const liveWindow = resolveWindow()
+        if (result.response === 1 && liveWindow === window) {
           closeConfirmed = true
-          window.close()
+          liveWindow.close()
         }
       })
       .finally(() => {
@@ -76,19 +95,20 @@ function createWindow(): void {
       })
   })
   window.on('closed', () => {
-    unregisterIpc?.()
-    unregisterIpc = null
+    if (editorWindow === window) editorWindow = null
+    unregisterIpc()
     applicationMenu.dispose()
     ipcMain.removeListener(IPC_CHANNELS.setDirty, handleDirty)
     ipcMain.removeListener(IPC_CHANNELS.historyState, handleHistoryState)
   })
 
-  window.webContents.setWindowOpenHandler(({ url }) => {
+  contents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https://')) void shell.openExternal(url)
     return { action: 'deny' }
   })
-  window.webContents.on('will-navigate', (event, url) => {
-    const currentUrl = window.webContents.getURL()
+  contents.on('will-navigate', (event, url) => {
+    if (contents.isDestroyed()) return
+    const currentUrl = contents.getURL()
     if (currentUrl !== '' && url !== currentUrl) event.preventDefault()
   })
 

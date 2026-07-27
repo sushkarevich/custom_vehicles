@@ -1,16 +1,16 @@
 import { useEffect } from 'react'
-import { isModelDefinition } from '../../../shared/schema'
 import { useDocumentStore } from '../../store/document-store'
-import { deletePart, duplicatePart } from '../../store/operations'
 import { isKeyboardEditingTarget } from '../editing-target'
 import type { TransformMode } from '../types'
 
 export function useKeyboardShortcuts(options: {
+  enabled: boolean
   setTransformMode: (mode: TransformMode) => void
   save: () => Promise<boolean>
   saveAs: () => Promise<boolean>
 }): void {
   useEffect(() => {
+    if (!options.enabled) return
     const handleKeyDown = (event: KeyboardEvent): void => {
       const command = event.metaKey || event.ctrlKey
       const key = event.key.toLocaleLowerCase('en-US')
@@ -28,26 +28,22 @@ export function useKeyboardShortcuts(options: {
       if (command && key === 'd') {
         event.preventDefault()
         const state = useDocumentStore.getState()
-        const document = state.history.present
-        if (!isModelDefinition(document) || state.selectedPartId === null) return
-        const result = duplicatePart(document, state.selectedPartId)
-        state.update(() => result.model)
-        state.selectPart(result.partId)
+        if (state.selectedPartIds.length === 0) return
+        state.executeModelCommand({ type: 'duplicate' })
         return
       }
       if (event.key === 'Delete' || event.key === 'Backspace') {
         const state = useDocumentStore.getState()
-        const document = state.history.present
-        if (!isModelDefinition(document) || state.selectedPartId === null) return
+        if (state.selectedPartIds.length === 0) return
         event.preventDefault()
-        const result = deletePart(document, state.selectedPartId)
-        state.update(() => result.model)
-        state.selectPart(result.selectedPartId)
+        state.executeModelCommand({ type: 'delete' })
         return
       }
-      if (key === 'w') options.setTransformMode('translate')
-      if (key === 'e') options.setTransformMode('rotate')
-      if (key === 'r') options.setTransformMode('scale')
+      // Transform hotkeys follow the physical W/E/R keys so they remain usable
+      // with the Russian keyboard layout selected.
+      if (event.code === 'KeyW') options.setTransformMode('translate')
+      if (event.code === 'KeyE') options.setTransformMode('rotate')
+      if (event.code === 'KeyR') options.setTransformMode('scale')
     }
 
     window.addEventListener('keydown', handleKeyDown)

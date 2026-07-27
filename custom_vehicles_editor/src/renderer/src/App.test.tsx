@@ -1,9 +1,10 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { EditorHistoryCommand } from '../../shared/history-commands'
-import { createDefaultModel } from '../../shared/schema'
+import { createDefaultModel, isModelDefinition } from '../../shared/schema'
 import type { EditorApi } from '../../shared/ipc'
 import { useDocumentStore } from '../store/document-store'
+import { addPart } from '../store/operations'
 import type { CameraCommand } from './types'
 import { App } from './App'
 
@@ -78,9 +79,22 @@ describe('запуск renderer', () => {
   it('не перехватывает W во время ввода текста', async () => {
     render(<App />)
     const idInput = screen.getByDisplayValue('new_model')
-    fireEvent.keyDown(idInput, { key: 'w' })
+    fireEvent.keyDown(idInput, { key: 'w', code: 'KeyW' })
     expect(screen.getByRole('button', { name: 'Перемещение (W)' })).toHaveAttribute('aria-pressed', 'true')
     await waitFor(() => expect(api.getRecentDocuments).toHaveBeenCalled())
+  })
+
+  it('переключает W/E/R по физическим клавишам при русской раскладке', () => {
+    render(<App />)
+
+    fireEvent.keyDown(document.body, { key: 'у', code: 'KeyE' })
+    expect(screen.getByRole('button', { name: 'Вращение (E)' })).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.keyDown(document.body, { key: 'к', code: 'KeyR' })
+    expect(screen.getByRole('button', { name: 'Масштаб (R)' })).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.keyDown(document.body, { key: 'ц', code: 'KeyW' })
+    expect(screen.getByRole('button', { name: 'Перемещение (W)' })).toHaveAttribute('aria-pressed', 'true')
   })
 
   it('направляет toolbar и native menu IPC в один history action path', async () => {
@@ -147,5 +161,108 @@ describe('запуск renderer', () => {
       expect(afterLoad.view).toBe('perspective')
       expect(afterLoad.nonce).toBeGreaterThan(initialCommand.nonce)
     })
+  })
+
+  it('keyboard duplicate/delete применяются ко всей selection ровно по одному разу', () => {
+    const first = addPart(createDefaultModel())
+    const second = addPart(first.model)
+    useDocumentStore.getState().reset(second.model)
+    useDocumentStore
+      .getState()
+      .setSelection(['body', first.partId], first.partId)
+    render(<App />)
+
+    fireEvent.keyDown(document.body, {
+      key: 'd',
+      code: 'KeyD',
+      ctrlKey: true
+    })
+
+    let state = useDocumentStore.getState()
+    expect(state.history.past).toHaveLength(1)
+    expect(state.selectedPartIds).toEqual(['body_2', 'part_3'])
+    expect(
+      isModelDefinition(state.history.present)
+        ? state.history.present.parts.map((part) => part.id)
+        : null
+    ).toEqual(['body', 'body_2', 'part', 'part_3', 'part_2'])
+
+    fireEvent.keyDown(document.body, {
+      key: 'Delete',
+      code: 'Delete'
+    })
+
+    state = useDocumentStore.getState()
+    expect(state.history.past).toHaveLength(2)
+    expect(
+      isModelDefinition(state.history.present)
+        ? state.history.present.parts.map((part) => part.id)
+        : null
+    ).toEqual(['body', 'part', 'part_2'])
+  })
+
+  it('keyboard batch commands не срабатывают внутри input', () => {
+    const added = addPart(createDefaultModel())
+    useDocumentStore.getState().reset(added.model)
+    useDocumentStore
+      .getState()
+      .setSelection(['body', added.partId], added.partId)
+    render(<App />)
+    const input = screen.getByDisplayValue('new_model')
+
+    fireEvent.keyDown(input, {
+      key: 'd',
+      code: 'KeyD',
+      ctrlKey: true
+    })
+    fireEvent.keyDown(input, {
+      key: 'Backspace',
+      code: 'Backspace'
+    })
+
+    expect(useDocumentStore.getState().history.past).toHaveLength(0)
+    const documentAfterEditingKeys =
+      useDocumentStore.getState().history.present
+    expect(
+      isModelDefinition(documentAfterEditingKeys)
+        ? documentAfterEditingKeys.parts
+        : []
+    ).toHaveLength(2)
+  })
+
+  it('resource modal приостанавливает Delete и Cmd/Ctrl+D для модели', () => {
+    const added = addPart(createDefaultModel())
+    useDocumentStore.getState().reset(added.model)
+    useDocumentStore
+      .getState()
+      .setSelection(['body', added.partId], added.partId)
+    render(<App />)
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Настройки ресурс-паков и ручных текстур'
+      })
+    )
+    const modalButton = screen.getByRole('button', {
+      name: 'Добавить папку'
+    })
+
+    fireEvent.keyDown(modalButton, {
+      key: 'Delete',
+      code: 'Delete'
+    })
+    fireEvent.keyDown(modalButton, {
+      key: 'd',
+      code: 'KeyD',
+      metaKey: true
+    })
+
+    const state = useDocumentStore.getState()
+    expect(state.history.past).toHaveLength(0)
+    expect(state.selectedPartIds).toEqual(['body', added.partId])
+    expect(
+      isModelDefinition(state.history.present)
+        ? state.history.present.parts.map((part) => part.id)
+        : null
+    ).toEqual(['body', added.partId])
   })
 })

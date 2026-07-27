@@ -1,6 +1,7 @@
 import type { RecentDocument } from '../../../shared/ipc'
 import type { EditorHistoryCommand } from '../../../shared/history-commands'
 import type { DocumentKind } from '../../../shared/schema'
+import type { ResourcePreviewMode } from '../../../shared/resource-preview'
 import type {
   CameraCommand,
   CameraType,
@@ -27,6 +28,9 @@ interface ToolbarProps {
   onSaveAs: () => void
   onExport: () => void
   onHistoryCommand: (command: EditorHistoryCommand) => void
+  resourceMode: ResourcePreviewMode
+  onResourceMode: (mode: ResourcePreviewMode) => void
+  onOpenResources: () => void
 }
 
 function ToolButton({
@@ -218,6 +222,26 @@ export function Toolbar(props: ToolbarProps): React.JSX.Element {
                 onClick={() => props.onSettings({ cameraType })}
               />
             ))}
+          </div>
+
+          <div className="tool-group segmented" aria-label="Предпросмотр материалов">
+            <ToolButton
+              label="Текстуры"
+              title="Показывать текстуры ресурс-паков"
+              active={props.resourceMode === 'textures'}
+              onClick={() => props.onResourceMode('textures')}
+            />
+            <ToolButton
+              label="Цвета"
+              title="Показывать цвета материалов"
+              active={props.resourceMode === 'colors'}
+              onClick={() => props.onResourceMode('colors')}
+            />
+            <ToolButton
+              label="Ресурсы…"
+              title="Настройки ресурс-паков и ручных текстур"
+              onClick={props.onOpenResources}
+            />
           </div>
 
           <details className="toolbar-menu">

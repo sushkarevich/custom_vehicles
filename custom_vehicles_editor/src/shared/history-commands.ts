@@ -37,7 +37,7 @@ export function isAlternateRedoShortcut(
 ): boolean {
   return (
     platform !== 'darwin' &&
-    input.type !== 'keyUp' &&
+    (input.type === undefined || input.type === 'keyDown') &&
     input.control &&
     !input.meta &&
     input.shift &&

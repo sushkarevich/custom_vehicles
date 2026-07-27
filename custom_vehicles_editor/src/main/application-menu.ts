@@ -7,7 +7,6 @@ import {
   type MenuItemConstructorOptions
 } from 'electron'
 import {
-  dispatchHistoryCommand,
   EMPTY_EDITOR_HISTORY_STATE,
   historyAccelerators,
   isAlternateRedoShortcut,
@@ -15,23 +14,27 @@ import {
   type EditorHistoryCommand,
   type EditorHistoryState
 } from '../shared/history-commands'
-import { IPC_CHANNELS } from '../shared/ipc'
+import {
+  dispatchHistoryToLiveWindow,
+  resolveLiveEditorWindow,
+  type EditorWindowResolver
+} from './editor-window'
 
 export interface ApplicationMenuController {
   updateHistoryState(state: EditorHistoryState): void
   dispose(): void
 }
 
-export function installApplicationMenu(window: BrowserWindow): ApplicationMenuController {
+export function installApplicationMenu(
+  resolveWindow: EditorWindowResolver<BrowserWindow>
+): ApplicationMenuController {
   let historyState = EMPTY_EDITOR_HISTORY_STATE
+  let disposed = false
   const accelerators = historyAccelerators(process.platform)
 
   const dispatch = (command: EditorHistoryCommand): void => {
-    dispatchHistoryCommand(historyState, command, {
-      application: (next) => window.webContents.send(IPC_CHANNELS.editorCommand, next),
-      nativeUndo: () => window.webContents.undo(),
-      nativeRedo: () => window.webContents.redo()
-    })
+    if (disposed) return
+    dispatchHistoryToLiveWindow(resolveWindow, historyState, command)
   }
 
   const template: MenuItemConstructorOptions[] = []
@@ -78,6 +81,7 @@ export function installApplicationMenu(window: BrowserWindow): ApplicationMenuCo
   const redoItem = menu.getMenuItemById('editor-history-redo')
 
   const updateHistoryState = (state: EditorHistoryState): void => {
+    if (disposed) return
     historyState = state
     if (undoItem !== null) undoItem.enabled = isHistoryCommandEnabled(state, 'undo')
     if (redoItem !== null) redoItem.enabled = isHistoryCommandEnabled(state, 'redo')
@@ -89,12 +93,19 @@ export function installApplicationMenu(window: BrowserWindow): ApplicationMenuCo
     event.preventDefault()
     dispatch('redo')
   }
-  window.webContents.on('before-input-event', handleBeforeInput)
+  const sourceContents = resolveLiveEditorWindow(resolveWindow)?.webContents ?? null
+  sourceContents?.on('before-input-event', handleBeforeInput)
 
   return {
     updateHistoryState,
     dispose() {
-      window.webContents.removeListener('before-input-event', handleBeforeInput)
+      if (disposed) return
+      disposed = true
+      if (sourceContents !== null && !sourceContents.isDestroyed()) {
+        sourceContents.removeListener('before-input-event', handleBeforeInput)
+      }
+      if (undoItem !== null) undoItem.enabled = false
+      if (redoItem !== null) redoItem.enabled = false
     }
   }
 }

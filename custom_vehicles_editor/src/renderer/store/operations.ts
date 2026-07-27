@@ -133,6 +133,199 @@ export function updatePart(
   return next
 }
 
+export function updateParts(
+  model: ModelDefinition,
+  partIds: Iterable<string>,
+  update: (part: ModelPart) => void
+): ModelDefinition {
+  const ids = new Set(partIds)
+  if (ids.size === 0) return model
+  const next = cloneModel(model)
+  let changed = false
+  next.parts.forEach((part) => {
+    if (!ids.has(part.id)) return
+    update(part)
+    changed = true
+  })
+  return changed ? next : model
+}
+
+export function duplicateParts(
+  model: ModelDefinition,
+  partIds: Iterable<string>
+): {
+  model: ModelDefinition
+  partIds: string[]
+  partIdBySource: ReadonlyMap<string, string>
+} {
+  const selected = new Set(partIds)
+  if (selected.size === 0) return { model, partIds: [], partIdBySource: new Map() }
+  const next = cloneModel(model)
+  const existing = new Set(next.parts.map((part) => part.id))
+  const copies: string[] = []
+  const partIdBySource = new Map<string, string>()
+  const result: ModelPart[] = []
+
+  next.parts.forEach((source) => {
+    result.push(source)
+    if (!selected.has(source.id)) return
+    const copyId = generateUniquePartId(source.id, existing)
+    existing.add(copyId)
+    const copy: ModelPart = structuredClone(source)
+    copy.id = copyId
+    result.push(copy)
+    copies.push(copyId)
+    partIdBySource.set(source.id, copyId)
+    addMetadataForCopy(next, source.id, copyId)
+  })
+  if (copies.length === 0) return { model, partIds: [], partIdBySource: new Map() }
+  next.parts = result
+  return { model: next, partIds: copies, partIdBySource }
+}
+
+export function deleteParts(
+  model: ModelDefinition,
+  partIds: Iterable<string>,
+  preferredFallbackFromPartId?: string | null
+): { model: ModelDefinition; selectedPartId: string | null; deletedPartIds: string[] } {
+  const selected = new Set(partIds)
+  const deletedPartIds = model.parts
+    .filter((part) => selected.has(part.id))
+    .map((part) => part.id)
+  if (deletedPartIds.length === 0 || deletedPartIds.length >= model.parts.length) {
+    return { model, selectedPartId: deletedPartIds.at(-1) ?? null, deletedPartIds: [] }
+  }
+  const preferredIndex =
+    preferredFallbackFromPartId === undefined || preferredFallbackFromPartId === null
+      ? -1
+      : model.parts.findIndex((part) => part.id === preferredFallbackFromPartId)
+  const firstIndex =
+    preferredIndex >= 0
+      ? preferredIndex
+      : model.parts.findIndex((part) => selected.has(part.id))
+  const next = cloneModel(model)
+  next.parts = next.parts.filter((part) => !selected.has(part.id))
+  if (next.editor !== undefined) {
+    for (const key of ['hidden-parts', 'locked-parts'] as const) {
+      if (next.editor[key] !== undefined) {
+        next.editor[key] = next.editor[key].filter((id) => !selected.has(id))
+      }
+    }
+  }
+  const fallback = next.parts[Math.min(Math.max(firstIndex, 0), next.parts.length - 1)]
+  return {
+    model: next,
+    selectedPartId: fallback?.id ?? null,
+    deletedPartIds
+  }
+}
+
+export function mirrorParts(
+  model: ModelDefinition,
+  partIds: Iterable<string>,
+  axis: MirrorAxis
+): {
+  model: ModelDefinition
+  partIds: string[]
+  partIdBySource: ReadonlyMap<string, string>
+} {
+  const selected = new Set(partIds)
+  if (selected.size === 0) return { model, partIds: [], partIdBySource: new Map() }
+  const next = cloneModel(model)
+  const existing = new Set(next.parts.map((part) => part.id))
+  const copies: string[] = []
+  const partIdBySource = new Map<string, string>()
+  const result: ModelPart[] = []
+
+  next.parts.forEach((source) => {
+    result.push(source)
+    if (!selected.has(source.id)) return
+    const copyId = generateUniquePartId(`${source.id}_mirror_${axis}`, existing)
+    existing.add(copyId)
+    const copy: ModelPart = structuredClone(source)
+    copy.id = copyId
+    copy.position[axis] = normalizeNumber(-copy.position[axis])
+    copy['rotation-degrees'] = mirroredRotation(copy['rotation-degrees'], axis)
+    result.push(copy)
+    copies.push(copyId)
+    partIdBySource.set(source.id, copyId)
+    addMetadataForCopy(next, source.id, copyId)
+  })
+  if (copies.length === 0) return { model, partIds: [], partIdBySource: new Map() }
+  next.parts = result
+  return { model: next, partIds: copies, partIdBySource }
+}
+
+export function reorderParts(
+  model: ModelDefinition,
+  partIds: Iterable<string>,
+  direction: -1 | 1
+): ModelDefinition {
+  const selected = new Set(partIds)
+  if (selected.size === 0) return model
+  const parts = [...model.parts]
+  if (direction < 0) {
+    for (let index = 1; index < parts.length; index += 1) {
+      const current = parts[index]
+      const previous = parts[index - 1]
+      if (
+        current !== undefined &&
+        previous !== undefined &&
+        selected.has(current.id) &&
+        !selected.has(previous.id)
+      ) {
+        parts[index - 1] = current
+        parts[index] = previous
+      }
+    }
+  } else {
+    for (let index = parts.length - 2; index >= 0; index -= 1) {
+      const current = parts[index]
+      const next = parts[index + 1]
+      if (
+        current !== undefined &&
+        next !== undefined &&
+        selected.has(current.id) &&
+        !selected.has(next.id)
+      ) {
+        parts[index] = next
+        parts[index + 1] = current
+      }
+    }
+  }
+  if (parts.every((part, index) => part === model.parts[index])) return model
+  return { ...cloneModel(model), parts }
+}
+
+export function setPartsMetadata(
+  model: ModelDefinition,
+  partIds: Iterable<string>,
+  key: 'hidden-parts' | 'locked-parts',
+  enabled: boolean
+): ModelDefinition {
+  const ids = new Set(partIds)
+  if (ids.size === 0) return model
+  const next = cloneModel(model)
+  next.editor ??= {}
+  const values = new Set(next.editor[key] ?? [])
+  ids.forEach((id) => {
+    if (enabled) values.add(id)
+    else values.delete(id)
+  })
+  next.editor[key] = [...values]
+  return next
+}
+
+export function assignMaterialToParts(
+  model: ModelDefinition,
+  partIds: Iterable<string>,
+  material: string
+): ModelDefinition {
+  return updateParts(model, partIds, (part) => {
+    part.material = material
+  })
+}
+
 export function reorderPart(
   model: ModelDefinition,
   partId: string,

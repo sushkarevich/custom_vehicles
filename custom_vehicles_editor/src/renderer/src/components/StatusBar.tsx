@@ -5,13 +5,15 @@ export function StatusBar({
   issues,
   status,
   filePath,
-  selectedPartId,
+  selectedPartIds,
+  activePartId,
   partCount
 }: {
   issues: ValidationIssue[]
   status: WorkflowStatus
   filePath: string | null
-  selectedPartId: string | null
+  selectedPartIds: string[]
+  activePartId: string | null
   partCount: number | null
 }): React.JSX.Element {
   const errors = issues.filter((issue) => issue.severity === 'error')
@@ -50,7 +52,12 @@ export function StatusBar({
       </details>
       <span className={`workflow-status ${status.kind}`}>{status.text}</span>
       <span className="status-spacer" />
-      {selectedPartId === null ? null : <span>Выбрано: <strong>{selectedPartId}</strong></span>}
+      {selectedPartIds.length === 0 ? null : (
+        <span>
+          Выбрано: <strong>{selectedPartIds.length}</strong>
+          {activePartId === null ? null : <> · Активная: <strong>{activePartId}</strong></>}
+        </span>
+      )}
       {partCount === null ? null : <span>Деталей: <strong>{partCount}</strong></span>}
       <span className="path-status" title={filePath ?? 'Новый документ'}>
         {filePath ?? 'Новый документ'}

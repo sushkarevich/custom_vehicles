@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useDocumentStore } from '../../store/document-store'
 import { normalizeNumericInput } from '../../store/operations'
 
@@ -56,14 +57,16 @@ export function NumberField({
   onChange,
   min,
   max,
-  step = 0.1
+  step = 0.1,
+  disabled = false
 }: {
   label: string
-  value: number
+  value: number | null
   onChange: (value: number) => void
   min?: number
   max?: number
   step?: number
+  disabled?: boolean
 }): React.JSX.Element {
   const begin = useDocumentStore((state) => state.beginTransaction)
   const end = useDocumentStore((state) => state.endTransaction)
@@ -71,15 +74,17 @@ export function NumberField({
     <Field label={label}>
       <input
         type="number"
-        value={Number.isFinite(value) ? value : ''}
+        value={value !== null && Number.isFinite(value) ? value : ''}
+        placeholder={value === null ? 'Смешано' : undefined}
         min={min}
         max={max}
         step={step}
+        disabled={disabled}
         onFocus={begin}
         onBlur={end}
         onChange={(event) =>
           onChange(
-            normalizeNumericInput(event.target.value, value, {
+            normalizeNumericInput(event.target.value, value ?? min ?? 0, {
               ...(min === undefined ? {} : { min }),
               ...(max === undefined ? {} : { max })
             })
@@ -87,6 +92,33 @@ export function NumberField({
         }
       />
     </Field>
+  )
+}
+
+export function IndeterminateCheckbox({
+  checked,
+  indeterminate,
+  onChange,
+  ariaLabel
+}: {
+  checked: boolean
+  indeterminate: boolean
+  onChange: (checked: boolean) => void
+  ariaLabel?: string
+}): React.JSX.Element {
+  const ref = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (ref.current !== null) ref.current.indeterminate = indeterminate
+  }, [indeterminate])
+  return (
+    <input
+      ref={ref}
+      type="checkbox"
+      checked={checked}
+      aria-label={ariaLabel}
+      aria-checked={indeterminate ? 'mixed' : checked}
+      onChange={(event) => onChange(event.target.checked)}
+    />
   )
 }
 

@@ -38,6 +38,8 @@ describe('native history shortcuts', () => {
     expect(isAlternateRedoShortcut('linux', input())).toBe(true)
     expect(isAlternateRedoShortcut('darwin', input())).toBe(false)
     expect(isAlternateRedoShortcut('win32', input({ shift: false }))).toBe(false)
+    expect(isAlternateRedoShortcut('win32', input({ type: 'char' }))).toBe(false)
+    expect(isAlternateRedoShortcut('win32', input({ type: 'keyUp' }))).toBe(false)
   })
 
   it('выбирает ровно один application или native-text handler', () => {
